@@ -1,0 +1,23 @@
+PROGRAM STRUKTUR
+
+[Main Page]
+Start med at printe el-prisen på nuværende tidspunkt.
+
+    1. Timepris for døgn
+    2. Billigste pris 24t frem
+    3. Min besparelse
+    4. Mit Elforbrug
+    5. Hjælp
+    0. Quit
+
+[Timepris for døgn]
+
+[Billigste pris 24 timer frem]
+
+[Min besparelse]
+
+[Mit Elforbrug]
+
+[Hjælp]
+
+[Quit]
