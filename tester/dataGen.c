@@ -13,7 +13,7 @@ int main(int argc, char const *argv[])
 
     srand(time(NULL));
 
-    for (i = 0; i <= array_length; ++i)
+    for (i = 0; i < array_length; ++i)
     {
         multiplier = (rand() % 20) + 90;
         printf("%d. ", data[i] / 10);
@@ -21,7 +21,7 @@ int main(int argc, char const *argv[])
     }
     printf("\n");
 
-    for (i = 0; i <= array_length; ++i)
+    for (i = 0; i < array_length; ++i)
     {
         printf("%d. ", data[i]);
     }
