@@ -70,3 +70,5 @@ double min_price (double price_interval_array[])
 }
   
 /*price_interval_array[0]-current_price=difference_to_max;*/
+
+/*This is a test*/
