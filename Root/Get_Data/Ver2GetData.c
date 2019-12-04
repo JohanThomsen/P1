@@ -36,9 +36,6 @@ void Get_Current_Time(current_time_struct *current_time);
 
 int main(void){
     double* data_array = NULL;
-   /* double low_price                = 1024;
-    int    low_price_time           = 0;
-    char   data_string[ENOUGH];*/
     FILE *fp_day_hour = NULL;
     current_time_struct current_time;
     saved_time_struct   saved_time;
@@ -53,17 +50,7 @@ int main(void){
 
     check_time_and_generate_data (&current_time, &saved_time, data_array, fp_day_hour);
 
-    print_data_array(data_array, current_time.hour, 24);
-    
-    /*get_lowest_price(data_array, &low_price, &low_price_time, current_hour);
-
-    printf("The lowest price is at %d o'clock, and it is %0.2f DKK per MWH\n", low_price_time, low_price);
-
-    printf("Price right now is : %0.2f, and the price diff is : %0.2f\n", data_array[current_hour], data_array[current_hour] - low_price);
-
-    printf("%d\n", current_day);*/
-
-    
+    print_data_array(data_array, current_time.hour, 24); /* Interval input wanted here */
 
   return 0;
 }
