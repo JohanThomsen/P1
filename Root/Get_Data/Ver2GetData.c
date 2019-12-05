@@ -5,7 +5,6 @@
 #include <string.h>
 
 #define HOURS_IN_TWO_DAYS 48
-#define ENOUGH 1000
 typedef struct
 {
     int hour,
@@ -22,8 +21,6 @@ typedef struct
         year;
 }saved_time_struct;
 
-
-
 void check_time_and_generate_data ( current_time_struct *current_time, saved_time_struct *saved_time, double data_array[], FILE *fp_day_hour);
 void read_from_seed_data (double data_array[]);
 double* double_Array_Memory_Allocation(double *array, double sizeof_array);
@@ -31,7 +28,6 @@ void find_saved_day_and_hour(FILE *fp_day_hour, saved_time_struct *saved_time);
 void print_data_array(double *data_array, int currenthour, int interval);
 void put_day_and_hour_into_txt(FILE *fp_day_hour, current_time_struct *current_time);
 void Data_Gen(double *data_array);
-void get_lowest_price(double *data_array, double *low_price, int *low_price_time, int current_hour);
 void Get_Current_Time(current_time_struct *current_time);
 
 int main(void){
@@ -132,16 +128,6 @@ void Data_Gen(double *data_array){
         random_number = rand();
         multiplier    = (random_number % 20) + 90;
         data_array[i] = ((data_array[i] / 100) * multiplier);
-    }
-}
-
-void get_lowest_price(double *data_array, double *low_price, int *low_price_time, int current_hour){
-    int i;
-    for (i = current_hour; i < current_hour + 24; ++i){
-        if (data_array[i - current_hour] < *low_price){
-            *low_price = data_array[i - current_hour];
-            *low_price_time = i - current_hour;
-        }
     }
 }
 
