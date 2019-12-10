@@ -12,35 +12,32 @@
 #define ADPP_VALUE 1.45
 #define ADPPP_VALUE 1.29
 
-struct white_goods {
-  char energy_label;
-}white_goods;
+
 
 /*Prototyper. Energy_type er en struct*/
 void prompt_for_white_goods(char* energy_label);
 void function_white_goods(char* energy_label);
 
-/*Calloc sætter alle bytes i arrayet til nul*/
+/*Calloc sï¿½tter alle bytes i arrayet til nul*/
   int main(void) {
   char* energy_label = calloc(4, sizeof(white_goods));
 
   prompt_for_white_goods(energy_label);
-  function_white_goods(energy_label); 
+  function_white_goods(energy_label);
 
   return 0;
 }
 
 void prompt_for_washing_machine(char* energy_label) {
-  
 
-    white_goods el;
-    el.energy_label = energy_label;
 
-    printf("Enter the energy label of your washing machine: ");  
-    scanf(" %s", el.energy_label);
-    printf(" %s\n", el.energy_label;
+
+
+    printf("Enter the energy label of your washing machine: ");
+    scanf(" %s", energy_label);
+    printf(" %s\n", energy_label;
 }
-void function_dishwasher(char* energy_label_dish) {
+void function_dishwasher(char* energy_label) {
 
   double sum = 0;
 
