@@ -13,14 +13,16 @@ typedef struct
       month,
       year;
 }time_of_day;
+
+void check_time_and_generate_data ( time_of_day *current_time, time_of_day *saved_time, double *data_array, FILE *fp_day_hour);
+void read_from_seed_data (double *data_array);
 double* double_Array_Memory_Allocation(double *array, int sizeof_array);
-void    check_time_and_generate_data  (time_of_day *current_time, time_of_day *saved_time, double *data_array, FILE *fp_day_hour);
-void    read_from_seed_data           (double *data_array);
-void    find_saved_day_and_hour       (FILE *fp_day_hour, time_of_day *saved_time);
-void    print_data_array              (double *data_array, int current_hour, int interval);
-void    put_day_and_hour_into_txt     (FILE *fp_day_hour, time_of_day *current_time);
-void    data_gen                      (double *data_array);
-void    Get_Current_Time              (time_of_day *current_time);
+void find_saved_day_and_hour(FILE *fp_day_hour, time_of_day *saved_time, time_of_day *current_time);
+void print_data_array(double *data_array, int current_hour, int interval);
+double get_current_price(double *data_array, int current_hour);
+void put_day_and_hour_into_txt(FILE *fp_day_hour, time_of_day *current_time);
+void data_gen(double *data_array);
+void Get_Current_Time(time_of_day *current_time);
 
 int main(void){
   double* data_array = NULL;
@@ -34,11 +36,13 @@ int main(void){
 
   Get_Current_Time(&current_time);
 
-  find_saved_day_and_hour(fp_day_hour, &saved_time);
+  find_saved_day_and_hour(fp_day_hour, &saved_time, &current_time);
 
   check_time_and_generate_data (&current_time, &saved_time, data_array, fp_day_hour);
 
   print_data_array(data_array, current_time.hour, 24); /* Interval input wanted here */
+
+  get_current_price(data_array, current_time.hour);
 
   free(data_array);
 
@@ -48,10 +52,10 @@ int main(void){
  /* Input : time_of_day pointer Current_time, time_of_day pointer saved_time, Double data_array, FILE pointer fp_day_hour
   * Output: Either and updated data_array, if it is a new new day and past 12 o'clock. if this happens it also updates the saved time with current_time. Else it does nothing. */
 void check_time_and_generate_data ( time_of_day *current_time, time_of_day *saved_time, double *data_array, FILE *fp_day_hour){
-  if (((saved_time->day != current_time->day) || (saved_time->month != current_time->month) || (saved_time->year != current_time->year)) && (current_time->hour >= 12)){
-    Data_Gen(data_array);
+  //if (((saved_time->day != current_time->day) || (saved_time->month != current_time->month) || (saved_time->year != current_time->year)) && (current_time->hour >= 12)){
+    data_gen(data_array);
     put_day_and_hour_into_txt(fp_day_hour, current_time);
-  }
+  //}
 }
 
 /* Input : double data_array.
@@ -87,11 +91,12 @@ double* double_Array_Memory_Allocation(double *array, int sizeof_array){
 
 /* Input : FILE pointer to fp_day_hour, time_of_day struct pointer saved_time
  * Output: Saved time from "day_hour_reset.txt" inputted into the saved_time struct */
-void find_saved_day_and_hour(FILE *fp_day_hour, time_of_day *saved_time){
+void find_saved_day_and_hour(FILE *fp_day_hour, time_of_day *saved_time, time_of_day *current_time){
   fp_day_hour = fopen("day_hour_reset.txt", "r");
 
   if (fp_day_hour == NULL){
     printf("Couldnt find text file. Generating a new set of prices\n");
+    put_day_and_hour_into_txt(fp_day_hour, current_time);
   } else {
     fscanf(fp_day_hour, "%d,%d,%d,%d", &saved_time->day, &saved_time->hour, &saved_time->month, &saved_time->year);
   }
@@ -107,6 +112,10 @@ void print_data_array(double *data_array, int current_hour, int interval){
   for (i = current_hour; i < interval; ++i){
     printf("%2d:00 = %2.2f DKK/KWh\n", (i % 24), data_array[i]);
   }
+}
+
+double get_current_price(double *data_array, int current_hour){
+  return data_array[current_hour];
 }
 
 /* Input : File Pointer fp_day_hour, time_of_day struct pointer current_time
@@ -129,7 +138,7 @@ void put_day_and_hour_into_txt(FILE *fp_day_hour, time_of_day *current_time){
 
 /* Input : Double data_array
  * Output: an updated data_array ran through a randomised noise generator.
- * Method: Runs through all numbers in the array, via a for loop, and multiplies it by a random number between 0.9 and 1.1.
+ * Method: Runs through all numbers in the array, via a for loop, and multiplies it by a random number between 0.9 and 1.1, then divided by 100 as the price in seed_data in is Mwh
  * This random number is seeded by the previous random number each iteration so it remains random from number to number */
 void data_gen(double *data_array){
   int i,
@@ -140,7 +149,7 @@ void data_gen(double *data_array){
     srand(random_number);
     random_number = rand();
     multiplier    = (random_number % 20) + 90;
-    data_array[i] = ((data_array[i] / 100) * multiplier);
+    data_array[i] = ((data_array[i] / 1000) * (multiplier));
   }
 }
 
