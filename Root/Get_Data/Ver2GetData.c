@@ -165,7 +165,7 @@ void data_gen(double *data_array, FILE *fp_saved_prices){
   fp_saved_prices = fopen("saved_prices.txt","w");
 
   for (i = 0; i < HOURS_IN_TWO_DAYS; ++i){
-    srand(time(NULL));
+    srand(clock());
     random_number = rand();
     multiplier    = (random_number % 20) + 90;
     data_array[i] = ((data_array[i] / 1000) * (multiplier));
