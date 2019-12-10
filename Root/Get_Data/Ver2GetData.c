@@ -14,15 +14,15 @@ typedef struct
       year;
 }time_of_day;
 
-void check_time_and_generate_data ( time_of_day *current_time, time_of_day *saved_time, double *data_array, FILE *fp_day_hour);
-void read_from_seed_data (double *data_array);
+void check_time_and_generate_data     (time_of_day *current_time, time_of_day *saved_time, double *data_array, FILE *fp_day_hour);
+void read_from_seed_data              (double *data_array);
 double* double_Array_Memory_Allocation(double *array, int sizeof_array);
-void find_saved_day_and_hour(FILE *fp_day_hour, time_of_day *saved_time, time_of_day *current_time);
-void print_data_array(double *data_array, int current_hour, int interval);
-double get_current_price(double *data_array, int current_hour);
-void put_day_and_hour_into_txt(FILE *fp_day_hour, time_of_day *current_time);
-void data_gen(double *data_array);
-void Get_Current_Time(time_of_day *current_time);
+void find_saved_day_and_hour          (FILE *fp_day_hour, time_of_day *saved_time, time_of_day *current_time);
+void print_data_array                 (double *data_array, int current_hour, int interval);
+double get_current_price              (double *data_array, int current_hour);
+void put_day_and_hour_into_txt        (FILE *fp_day_hour, time_of_day *current_time);
+void data_gen                         (double *data_array);
+void get_current_time                 (time_of_day *current_time);
 
 int main(void){
   double* data_array = NULL;
@@ -33,17 +33,11 @@ int main(void){
   data_array = double_Array_Memory_Allocation(data_array, HOURS_IN_TWO_DAYS);
 
   read_from_seed_data(data_array);
-
-  Get_Current_Time(&current_time);
-
+  get_current_time(&current_time);
   find_saved_day_and_hour(fp_day_hour, &saved_time, &current_time);
-
   check_time_and_generate_data (&current_time, &saved_time, data_array, fp_day_hour);
-
   print_data_array(data_array, current_time.hour, 24); /* Interval input wanted here */
-
   get_current_price(data_array, current_time.hour);
-
   free(data_array);
 
   return 0;
@@ -52,10 +46,10 @@ int main(void){
  /* Input : time_of_day pointer Current_time, time_of_day pointer saved_time, Double data_array, FILE pointer fp_day_hour
   * Output: Either and updated data_array, if it is a new new day and past 12 o'clock. if this happens it also updates the saved time with current_time. Else it does nothing. */
 void check_time_and_generate_data ( time_of_day *current_time, time_of_day *saved_time, double *data_array, FILE *fp_day_hour){
-  //if (((saved_time->day != current_time->day) || (saved_time->month != current_time->month) || (saved_time->year != current_time->year)) && (current_time->hour >= 12)){
+  if (((saved_time->day != current_time->day) || (saved_time->month != current_time->month) || (saved_time->year != current_time->year)) && (current_time->hour >= 12)){
     data_gen(data_array);
     put_day_and_hour_into_txt(fp_day_hour, current_time);
-  //}
+  }
 }
 
 /* Input : double data_array.
@@ -156,7 +150,7 @@ void data_gen(double *data_array){
 /* Input : time_of_day pointer current_time
  * Output: An updated current_time filled with the current system time in the compute the program is run on
  * Method: Uses the time.h library to extract the system time from the pc, and the makes the needed alterations to the months and year to make it correct. */
-void Get_Current_Time(time_of_day *current_time){
+void get_current_time(time_of_day *current_time){
   time_t now;
   struct tm *now_tm;
 
