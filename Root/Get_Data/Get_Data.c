@@ -5,7 +5,7 @@
 #include <string.h>
 #include "Get_Data.h"
 
-
+/*
 int main(void){
   double* data_array = NULL;
   FILE *fp_day_hour = NULL;
@@ -17,12 +17,14 @@ int main(void){
   get_current_time(&current_time);
   find_saved_day_and_hour(fp_day_hour, &saved_time, &current_time);
   check_time_and_generate_data (&current_time, &saved_time, data_array, fp_day_hour);
-  print_data_array(data_array, current_time.hour, 24); /* Interval input wanted here */
+  print_data_array(data_array, current_time.hour, 24);
   get_current_price(data_array, current_time.hour);
   free(data_array);
 
   return 0;
 }
+*/
+
 
  /* Input : time_of_day pointer Current_time, time_of_day pointer saved_time, Double data_array, FILE pointer fp_day_hour
   * Output: Either and updated data_array, if it is a new new day and past 12 o'clock. if this happens it also updates the saved time with current_time. Else it does nothing. */
@@ -76,17 +78,6 @@ void read_from_seed_data (double *data_array){
   fclose(fp_seed_data);
 }
 
-/* Input : Double array, int sizeof_array
- * output: Memory allocated and zerod out, for inputted double array with the size of inputted int.
- * Or it exits the program if memory allocation is not succesful */
-double* double_Array_Memory_Allocation(double *array, int sizeof_array){
-  array = (double *) calloc (sizeof_array, (sizeof(double)));
-  if (array == NULL){
-    printf("Didn't get the memory we wanted. Now terminating");
-    exit(EXIT_FAILURE);
-  }
-  return array;
-}
 
 /* Input : FILE pointer to fp_day_hour, time_of_day struct pointer saved_time
  * Output: Saved time from "day_hour_reset.txt" inputted into the saved_time struct */
