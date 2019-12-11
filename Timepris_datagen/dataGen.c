@@ -13,9 +13,9 @@ int main(void){
     srand(time(NULL));
 
     for (i = 0; i < array_length; ++i){
-      multiplier = (rand() % 20) + 90;
-      data[i] = ((data[i] / 1000) * multiplier);
-      printf("data[%2d] = %2d\n", i, data[i]);
+        multiplier = (rand() % 20) + 90;
+        data[i] = ((data[i] / 1000) * multiplier);
+        printf("data[%2d] = %2d\n", i, data[i]);
     }
     return 0;
 }
