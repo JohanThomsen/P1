@@ -10,7 +10,7 @@ int main(void){
   double* data_array = NULL;
   FILE *fp_day_hour = NULL;
   time_of_day current_time,
-              saved_time;
+               saved_time;
 
   data_array = double_Array_Memory_Allocation(data_array, HOURS_IN_TWO_DAYS);
 
