@@ -9,7 +9,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "..\Get_Data\Get_Data.h"
-
+#include "..\Simulate_house\White_goods.h"
+/* #include "..\Analyze_data\.h" */
+#include "..\Utility.h"
 
 #define MAX_USERS        10
 #define MAX_NAME_LENGTH  20
@@ -28,10 +30,9 @@ int compare_labels(char* user_label, char** energy_label_input);
 int intro_frontend(void);
 int user_handler(void);
 int answer_handling(char *input);
-void read_profile_data(profile *data_array) { /* Stub function */
+int read_profile_data(profile *data_array) { /* Stub function */
 int profile_prompt(void);
 void setup_profile(void);
-void error_handler(int error_code);
 void init_profile(profile *profile_input);
 void check_fp(FILE *file_pointer); /* Utility function */
 int overview_message(void);
@@ -41,14 +42,13 @@ int interval_prompt(void);
 int interface_handler(int user_response);
 int intro_frontend(void);
 int menu_interface(double *data_array, int current_hour);
-int validate_pointer(void* input_pointer){
 double user_input_price(void);
 int price_prompt(void);
 double price_kwh(void);
 
 
 
-
+/*
 int main(void) {
 
   intro_frontend();
@@ -56,7 +56,7 @@ int main(void) {
 
   return 0;
 }
-
+*/
 
 int intro_frontend(void) {
   
@@ -69,7 +69,7 @@ int intro_frontend(void) {
 int menu_interface(double *data_array, int current_hour) {
   int user_response = 0;
   
-  printf("Current price: %lf DKK/kWh - %lf%% green energy\n", get_current_price(data_array, current_hour)); /* Interval 1 hour */
+  printf("Current price: %lf DKK/kWh - %lf%% green energy\n", get_current_price(data_array, current_hour)); /* Can fetch current price, but not green energy */
   user_response = prompt_menu(user_response);
   
   interface_handler(user_response);
@@ -78,19 +78,26 @@ int menu_interface(double *data_array, int current_hour) {
 }
 
 int interface_handler(int user_response) {
+  int index = -1;
+
   switch (user_response) {
-    case 1:
-      electricity_overview(interval_prompt()); /* Analyze data */ 
+    /*case 1:
+      electricity_overview(interval_prompt());                                Analyze data - NOT INCLUDED YET 
       break;
-    case 2:                                    /* */
-      simulate_electricity_usage(energy_label, price_kwh());
+    */
+    case 2:                                                                  /* DONE DONE */
+      index = read_profile_data(data_array);
+      simulate_electricity_usage(data_array[index].energy_label_wash, price_kwh());
+      simulate_electricity_usage(data_array[index].energy_label_dish, price_kwh());
       break;
-    case 3:
-      subscription_compare();
-      break;
+    /*
+      case 3:
+      subscription_compare();                                   MISSING 
+      break;  
     case -1:
-      exit_function();
+      exit_function();                                          MISSING
       break;
+    */
   }
   return 0;
 }
@@ -207,14 +214,15 @@ int answer_handling(char input) {
   return 0;
 }
 
-void read_profile_data(profile *data_array) { /* Stub function */
+int read_profile_data(profile *data_array) { /* Stub function */
   int local_max_array_lgt = 100, 
       i,
-      local_max_entries;
+      local_max_entries,
+      index = 0;
   FILE *fp_profile = fopen("profile_data.txt", "r");
   char *current_str = calloc(local_max_array_lgt, sizeof(char));
   validate_filepointer(fp);
-  validate_pointer(current_str);
+  validate_allocation(current_str);
   
 
   printf("Due to development deadline and project constraints, the user profile will be assumed to be the first entry in the profile_data.txt\n");
@@ -228,13 +236,7 @@ void read_profile_data(profile *data_array) { /* Stub function */
   }
 
   free(current_str);
-}
-
-int validate_pointer(void* input_pointer){
-  if (input_pointer == NULL){
-    error_handler(6); /* NULL Pointer */
-  } 
-  return 0;
+  return index;
 }
 
 
@@ -346,8 +348,3 @@ void energy_label_function(char* energy_label) {
     error_handler(3); /* Too many scanf conversions */
   }
 }
-
-void error_handler(int error_code) {
-  printf("error_code: %d", error_code);
-}
-
