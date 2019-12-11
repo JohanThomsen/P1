@@ -3,6 +3,18 @@
 #include <math.h>
 #include <time.h>
 
+typedef struct
+{
+  double total_load;
+  double hydro_power;
+  double other_renewable;
+  double solar_power;
+  double onshore_windpower;
+  double offshore_windpower;
+} renewable;
+
+void read_file(FILE *ifp, char *current_string, renewable *renewable_array);
+
 int cmpfunc (const void * a, const void * b);
 
 void sort_price (double price_interval_array[], int size_price);
@@ -15,16 +27,21 @@ double max_price (double price_interval_array[]);
 
 double min_price (double price_interval_array[], int size_price);
 
-
 /* Besparelse ved forskellen mellem dagens gennemsnitspris, min og og max.
    Dette kan gøres ved at finde gennemsnittet af vores simulerede priser. */ 
 
 int main(void)
 {
+    FILE *ifp = fopen("data.txt", "r");
+    char *current_string = (char*)calloc(100, sizeof(char));
+    renewable renewable_array[144];
+
+    read_file(ifp, current_string, renewable_array);
+    
     double renewable_interval_array[] =
     {
-      3069.51,521.74,604.92,19.35,119.57,
-      3092.53,521.48,609.07,16.17,116.93,
+      3069.51, 2.2, 4, 2.1, 527.3, 542.6,
+      3092.53, 2.2, 3.7, 0.1, 596.1, 584.5,
       3006.23,436.74,540.47,14.68,114.51,
       2574.83,334.25,279.32,12.03,115.91,
       2136.74,272.44,338.81,11.6,115.8,
@@ -59,14 +76,54 @@ int main(void)
     };
 
   int size_price = *(&price_interval_array + 1) - price_interval_array;
+
+  int i;
+      for (i=0; i < 144; i+=6)
+      {
+        printf("%f",renewable_array[i].total_load);
+      }    
     
   sort_price(price_interval_array, size_price);
   printf("Average renewable energy in time interval: %.2f percent\n",renewable_average(renewable_interval_array, size_renewable));
   printf("Average price in time interval: %.2f DKK/MWh\n",saving_average(price_interval_array, size_price));
   printf("Max price in time interval: %.2f DKK/MWh\n",max_price(price_interval_array));
   printf("Min price in time interval: %.2f DKK/MWh\n",min_price(price_interval_array, size_price));
+
+  free(current_string);
+  fclose(ifp);
   
   return 0;
+}
+
+void read_file(FILE *ifp, char *current_string, renewable *renewable_array)
+{
+  int i=0, j=0;
+
+  if (ifp != NULL)
+  {
+    current_string = fgets(current_string,100,ifp);
+    
+    while (current_string != NULL)
+    {
+      sscanf(current_string,
+      " %f"
+      " %f"
+      " %f"
+      " %f"
+      " %f"
+      " %f",
+      &renewable_array[i].total_load,
+      &renewable_array[i].hydro_power,
+      &renewable_array[i].other_renewable,
+      &renewable_array[i].solar_power,
+      &renewable_array[i].onshore_windpower,
+      &renewable_array[i].offshore_windpower
+      );
+
+      current_string = fgets(current_string, 100, ifp);
+      i++;
+    }
+  }
 }
 
 int cmpfunc (const void * a, const void * b)
