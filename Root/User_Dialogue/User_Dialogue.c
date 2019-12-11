@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "..\Get_Data\Get_Data.h"
+
 
 #define MAX_USERS        10
 #define MAX_NAME_LENGTH  20
@@ -26,7 +28,7 @@ int compare_labels(char* user_label, char** energy_label_input);
 int intro_frontend(void);
 int user_handler(void);
 int answer_handling(char *input);
-void read_profile_data(void); /* Stub function */
+void read_profile_data(profile *data_array) { /* Stub function */
 int profile_prompt(void);
 void setup_profile(void);
 void error_handler(int error_code);
@@ -39,6 +41,13 @@ int interval_prompt(void);
 int interface_handler(int user_response);
 int intro_frontend(void);
 int menu_interface(double *data_array, int current_hour);
+int validate_pointer(void* input_pointer){
+double user_input_price(void);
+int price_prompt(void);
+double price_kwh(void);
+
+
+
 
 int main(void) {
 
@@ -73,8 +82,8 @@ int interface_handler(int user_response) {
     case 1:
       electricity_overview(interval_prompt()); /* Analyze data */ 
       break;
-    case 2:
-      simulate_electricity_usage();
+    case 2:                                    /* */
+      simulate_electricity_usage(energy_label, price_kwh());
       break;
     case 3:
       subscription_compare();
@@ -86,6 +95,51 @@ int interface_handler(int user_response) {
   return 0;
 }
 
+double price_kwh(void){
+  return price_prompt;
+}
+
+int price_prompt(void){
+  char answer = 'n';
+  int scanres = 0;
+  double result = 0;
+
+  printf("To calculate price of electricity usage the price of electricity in DKK/kWh is needed.\nDo you want to use the cheapest price within the next 24 hours, or manually input price?\n'C' for Cheapeast price, 'M' for Manual price: ");
+  scanres = scanf(" %c", &answer);
+ 
+  if (scanres == 1){ 
+    if (answer == 'C' || answer == 'c') {
+      result = get_cheapest_price(); /* get_cheapest_price() er en del af Analyze_data modulet */
+    } else if (answer == 'M' || answer == 'm') {
+      result = user_input_price();
+    } else {
+      error_handler(1); /* Invalid input error */
+    }
+  } else {
+    error_handler(3);
+  }
+
+  return result;
+}
+
+double user_input_price(void){
+  double price  = 0,
+         input  = 0;
+  int scanres = 0;
+
+  printf("Input price of electricity in DKK/kWh - BEFORE taxes (in DK usually between 0.20 and 0.60 DKK): ");
+  scanres = scanf(" %lf", &input);
+  
+  if (scanres != 1) {
+    error_handler(3); /* Too many scanf conversions */
+  } else {
+    price = input;
+  }
+
+  return price;
+}
+
+  
 int interval_prompt(void) {
   int interval = 0,
       scanres = 0;
@@ -127,18 +181,19 @@ int overview_message(void) {
   return 0;
 }
 
+
 int user_handler(void) {
   char answer = '\0';
   printf("Do you have a profile? [Y/n]"); 
-  scanf(" %s", &answer);
+  scanf(" %c", &answer);
   
-  answer_handling(&answer);
+  answer_handling(answer);
 
   return 0;
 }
 
-int answer_handling(char *input) {
-  char answer = *input;
+int answer_handling(char input) {
+  char answer = input;
 
   if (answer == 'Y' || answer == 'y') {
     read_profile_data(); /* Stub function */
@@ -146,14 +201,40 @@ int answer_handling(char *input) {
     profile_prompt();
     
   } else {
-    return 1; /* Invalid input error handling */
+    error_handler(1); /* Invalid input error handling */
   }
 
   return 0;
 }
 
-void read_profile_data(void) { /* Stub function */
-    printf("Due to development deadline and project constraints, the user profile will be assumed to be the first entry in the profile_data.txt\n");
+void read_profile_data(profile *data_array) { /* Stub function */
+  int local_max_array_lgt = 100, 
+      i,
+      local_max_entries;
+  FILE *fp_profile = fopen("profile_data.txt", "r");
+  char *current_str = calloc(local_max_array_lgt, sizeof(char));
+  validate_filepointer(fp);
+  validate_pointer(current_str);
+  
+
+  printf("Due to development deadline and project constraints, the user profile will be assumed to be the first entry in the profile_data.txt\n");
+  for (i = 0, local_max_entries = 10; i < local_max_entries; ++i) { 
+    if (fgets(current_str, local_max_array_lgt, fp_profile) != NULL){
+      sscanf(current_str, "Username: %s, Energy label washing machine: %s, Energy label dishwasher: %s", 
+                           data_array[i].profile_name, 
+                           data_array[i].energy_label_wash, 
+                           data_array[i].energy_label_dish);
+    }
+  }
+
+  free(current_str);
+}
+
+int validate_pointer(void* input_pointer){
+  if (input_pointer == NULL){
+    error_handler(6); /* NULL Pointer */
+  } 
+  return 0;
 }
 
 
@@ -166,7 +247,7 @@ int profile_prompt(void) {
   } else if (answer == 'N' || answer == 'n') {
     return 0;
   } else {
-    return 1; /* Invalid input error handling */
+    error_handler(1); /* Invalid input error handling */
   }
 
   return 0;
