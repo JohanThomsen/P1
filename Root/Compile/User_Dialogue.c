@@ -1,75 +1,56 @@
-/* 
- * Intro "Hello World"
- * User prompt - input = different function calls
- */
-
-
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "Get_Data.h"
 #include "White_goods.h"
-/* #include "..\Analyze_data\.h" */
+#include "Analyze_Data.h"
 #include "Utility.h"
 #include "User_Dialogue.h"
 
-
-
-void create_profile(profile *profile_input, char **energy_label);
-void user_name(char* name);
-void energy_label_function(char* energy_label);
-int compare_labels(char* user_label, char** energy_label_input);
-int intro_frontend(void);
-int user_handler(void);
-int answer_handling(char input);
-int read_profile_data(profile *profiles);  /* Stub function */
+int intro_frontend(profile *profile_array);
+int menu_interface(profile *profiles, double *data_array);
+int interface_handler(int user_response, profile *profile_array, double *data_array);
+double price_kwh(double *data_array);
+int price_prompt(double *data_array);
+double user_input_price(void);
+int interval_prompt(void);
+int prompt_menu(int input);
+int user_input(int input);
+int overview_message(void);
+int answer_handling(char input, profile *profile_array);
+int user_handler(profile *profile_array);
+void validate_filepointer(void* input_filepointer);
+int read_profile_data(profile *profiles);
 int profile_prompt(void);
 void setup_profile(void);
 void init_profile(profile *profile_input);
-void check_fp(FILE *file_pointer); /* Utility function */
-int overview_message(void);
-int user_input(int input);
-int prompt_menu(int input);
-int interval_prompt(void);
-int interface_handler(int user_response, profile *profile_array);
-int menu_interface(profile *profiles, double *data_array, int current_hour);
-double user_input_price(void);
-int price_prompt(void);
-double price_kwh(void);
+void create_profile(profile *profile_input, char **energy_label);
+void check_fp(FILE *file_pointer);
+int compare_labels(char* user_label, char **energy_label_input);
+void user_name(char* name);
+void energy_label_function(char* energy_label);
 
-
-
-/*
-int main(void) {
-
-  intro_frontend();
-  menu_interface(data_array, current_time.hour);
-
-  return 0;
-}
-*/
-
-int intro_frontend(void) {
+int intro_frontend(profile *profile_array) {
   
   printf("Welcome to A404s price evaluator\n");
-  user_handler();
+  user_handler(profile_array);
 
   return 0;
 }
 
-int menu_interface(profile *profiles, double *data_array, int current_hour) {
+int menu_interface(profile *profiles, double *data_array) {
   int user_response = 0;
   
-  printf("Current price: %lf DKK/kWh - %lf%% green energy\n", get_current_price(data_array, current_hour)); /* Can fetch current price, but not green energy */
+  printf("Current price: %lf DKK/kWh - %lf%% green energy\n", get_current_price(data_array, get_current_hour())); /* Can fetch current price, but not green energy */
   user_response = prompt_menu(user_response);
   
-  interface_handler(user_response, profiles);
+  interface_handler(user_response, profiles, data_array);
 
   return 0;
 }
 
-int interface_handler(int user_response, profile *profile_array) {
+int interface_handler(int user_response, profile *profile_array, double *data_array) {
   int index = -1;
 
   switch (user_response) {
@@ -79,7 +60,7 @@ int interface_handler(int user_response, profile *profile_array) {
     */
     case 2:                                                                  /* DONE DONE */
       index = read_profile_data(profile_array);
-      simulate_electricity_usage(profile_array[index].energy_label_wash, profile_array[index].energy_label_dish, price_kwh());
+      simulate_electricity_usage(profile_array[index].energy_label_wash, profile_array[index].energy_label_dish, price_kwh(data_array));
       break;
     /*
       case 3:
@@ -93,11 +74,11 @@ int interface_handler(int user_response, profile *profile_array) {
   return 0;
 }
 
-double price_kwh(void){
-  return price_prompt();
+double price_kwh(double *data_array){
+  return price_prompt(data_array);
 }
 
-int price_prompt(void){
+int price_prompt(double *data_array){
   char answer = 'n';
   int scanres = 0;
   double result = 0;
@@ -107,7 +88,7 @@ int price_prompt(void){
  
   if (scanres == 1){ 
     if (answer == 'C' || answer == 'c') {
-      result = get_cheapest_price(); /* get_cheapest_price() er en del af Analyze_data modulet */
+      result = lowest_price_in_interval(data_array, interval_prompt(), get_current_hour()); /* get_cheapest_price() er en del af Analyze_data modulet */
     } else if (answer == 'M' || answer == 'm') {
       result = user_input_price();
     } else {
@@ -179,22 +160,21 @@ int overview_message(void) {
   return 0;
 }
 
-
-int user_handler(void) {
+int user_handler(profile *profile_array) {
   char answer = '\0';
   printf("Do you have a profile? [Y/n]"); 
   scanf(" %c", &answer);
   
-  answer_handling(answer);
+  answer_handling(answer, profile_array);
 
   return 0;
 }
 
-int answer_handling(char input) {
+int answer_handling(char input, profile *profile_array) {
   char answer = input;
 
   if (answer == 'Y' || answer == 'y') {
-    read_profile_data(); /* Stub function */
+    read_profile_data(profile_array); /* Stub function */
   } else if (answer == 'N' || answer == 'n') {
     profile_prompt();
     

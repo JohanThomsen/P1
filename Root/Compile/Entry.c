@@ -14,8 +14,8 @@ int main(void) {
 
 
 
-  data_array    = validate_allocation(data_array); /* include utility */
-  profile_array = validate_allocation(profile_array); /* include utility */
+  validate_allocation(data_array);
+  validate_allocation(profile_array);
 
   init_profile(profile_array);
 
@@ -23,8 +23,8 @@ int main(void) {
   find_saved_day_and_hour(fp_day_hour, &saved_time, &current_time);
   check_time_and_generate_data (&current_time, &saved_time, data_array, fp_day_hour);
   
-  intro_frontend(); /* include userdialogue*/ 
-  menu_interface(profile_array, data_array, current_time.hour); /* userdialogue og get_data*/  
+  intro_frontend(profile_array); /* include userdialogue*/ 
+  menu_interface(profile_array, data_array); /* userdialogue og get_data*/  
 
   free(profile_array);
   free(data_array);

@@ -16,3 +16,5 @@ void    print_data_array              (double *data_array, int current_hour, int
 void    put_day_and_hour_into_txt     (FILE *fp_day_hour, time_of_day *current_time);
 void    data_gen                      (double *data_array, FILE *fp_saved_prices);
 void    get_current_time              (time_of_day *current_time);
+int     get_current_hour              (void);
+

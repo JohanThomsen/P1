@@ -19,12 +19,7 @@
 void function_washing_machine(char* energy_label_wash, double user_price);
 void function_dishwasher(char* energy_label_dish, double user_price);
 
-int main(void) {
 
-  simulate_electricity_usage(energy_label_dish, energy_label_wash, user_price);
-
-  return 0;
-}
 /* This function calculates the price pr use for a dishwasher. The function contains
    if-else statements for each energy label. Each energy label is assigned with a different value depending on the label.
    APPPW (A+++) is assigned the lowest value and AW is assigned the highest value (A).

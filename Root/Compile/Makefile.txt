@@ -7,21 +7,25 @@ DEP_1 = Utility
 DEP_2 = Get_Data
 DEP_3 = User_Dialogue
 DEP_4 = White_Goods
+DEP_5 = Analyze_Data
 
-$(TARGET).exe: $(TARGET).c $(DEP_1).o $(DEP_2).o $(DEP_3).o $(DEP_4).o
-	$(CC) $(CFLAGS) $(TARGET).c -o $(TARGET).exe
+$(TARGET).exe: $(TARGET).c $(DEP_1).o $(DEP_2).o $(DEP_3).o
+	$(CC) $(CFLAGS) $(TARGET).c -c -o $(TARGET).exe
 	
 $(DEP_1).o: $(DEP_1).c $(DEP_1).h
-	$(CC) -c $(DEP_1).c
+	$(CC) $(CFLAGS) -c $(DEP_1).c
 	
-$(DEP_2).o: $(DEP_2).c $(DEP_2).h $(DEP_1).h
-	$(CC) -c $(DEP_2).c
+$(DEP_2).o: $(DEP_2).c $(DEP_2).h
+	$(CC) $(CFLAGS) -c $(DEP_2).c
 	
-$(DEP_3).o: $(DEP_3).c $(DEP_3).h $(DEP_4).h $(DEP_2).h $(DEP_1).h
-	$(CC) -c $(DEP_3).c
+$(DEP_3).o: $(DEP_3).c $(DEP_3).h $(DEP_4).o $(DEP_2).h $(DEP_1).h $(DEP_5).o
+	$(CC) $(CFLAGS) -c $(DEP_3).c
 	
 $(DEP_4).o: $(DEP_4).c $(DEP_4).h
-	$(CC) -c $(DEP_4).c
+	$(CC) $(CFLAGS) -c $(DEP_4).c
+
+$(DEP_5).o: $(DEP_5).c $(DEP_5).h
+	$(CC) $(CFLAGS) -c $(DEP_5).c
 
 clean:
 	rm *.o $(TARGET).exe *~ *.swp

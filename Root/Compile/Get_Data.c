@@ -5,26 +5,6 @@
 #include <string.h>
 #include "Get_Data.h"
 
-/*
-int main(void){
-  double* data_array = NULL;
-  FILE *fp_day_hour = NULL;
-  time_of_day current_time,
-               saved_time;
-
-  data_array = double_Array_Memory_Allocation(data_array, HOURS_IN_TWO_DAYS);
-
-  get_current_time(&current_time);
-  find_saved_day_and_hour(fp_day_hour, &saved_time, &current_time);
-  check_time_and_generate_data (&current_time, &saved_time, data_array, fp_day_hour);
-  print_data_array(data_array, current_time.hour, 24);
-  get_current_price(data_array, current_time.hour);
-  free(data_array);
-
-  return 0;
-}
-*/
-
 
  /* Input : time_of_day pointer Current_time, time_of_day pointer saved_time, Double data_array, FILE pointer fp_day_hour
   * Output: Either and updated data_array, if it is a new new day and past 12 o'clock. if this happens it also updates the saved time with current_time. Else it does nothing. */
@@ -160,4 +140,13 @@ void get_current_time(time_of_day *current_time){
   current_time->day  = now_tm->tm_mday;
   current_time->month  = now_tm->tm_mon + 1;
   current_time->year = now_tm->tm_year + 1900;
+}
+
+int get_current_hour(void){
+  time_t now;
+  struct tm *now_tm;
+  now = time(NULL);
+
+  now_tm = localtime(&now);
+  return now_tm->tm_hour;
 }
