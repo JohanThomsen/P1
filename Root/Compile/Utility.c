@@ -35,3 +35,24 @@ void validate_allocation(void* input_pointer) {
     error_handler(6, __LINE__, __FILE__); /* NULL POINTER */
   }
 }
+
+void init_profile(profile *profile_input) {
+  FILE *fp = fopen("profile_data.txt", "a+");
+  
+  check_fp(fp);
+
+  fprintf(fp, "Username: %s, Energy label washing machine: %s, Energy label dishwasher: %s\n",
+                                                               "Placeholder_Username",
+                                                               "A++",
+                                                               "A+++");
+
+
+  fclose(fp);
+}
+
+void check_fp(FILE *file_pointer) { /* Utility function */
+  if (file_pointer == NULL) {
+    error_handler(2, __LINE__, __FILE__); /* Could not open or access the desired file */
+  }
+}
+

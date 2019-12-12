@@ -20,12 +20,12 @@ int main(void) {
   init_profile(profile_array);
   read_profile_data(profile_array);
   
-  get_current_time(&current_time); /* include utility or get_data*/ 
+  get_current_time(&current_time);
   find_saved_day_and_hour(fp_day_hour, &saved_time, &current_time);
   check_time_and_generate_data (&current_time, &saved_time, data_array, fp_day_hour);
   
-  intro_frontend(profile_array); /* include userdialogue*/ 
-  menu_interface(profile_array, data_array); /* userdialogue og get_data*/  
+  intro_frontend(profile_array);
+  menu_interface(profile_array, data_array);
 
 
   free(profile_array);
