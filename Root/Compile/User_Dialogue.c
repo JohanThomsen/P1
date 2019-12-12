@@ -8,20 +8,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "..\Get_Data\Get_Data.h"
-#include "..\Simulate_house\White_goods.h"
+#include "Get_Data.h"
+#include "White_goods.h"
 /* #include "..\Analyze_data\.h" */
-#include "..\Utility.h"
+#include "Utility.h"
+#include "User_Dialogue.h"
 
-#define MAX_USERS        10
-#define MAX_NAME_LENGTH  20
-#define MAX_LABEL_LENGTH  5
 
-typedef struct {
-  char profile_name[MAX_NAME_LENGTH];
-  char energy_label_wash[MAX_LABEL_LENGTH];
-  char energy_label_dish[MAX_LABEL_LENGTH];
-} profile;
 
 void create_profile(profile *profile_input, char **energy_label);
 void user_name(char* name);
@@ -29,8 +22,8 @@ void energy_label_function(char* energy_label);
 int compare_labels(char* user_label, char** energy_label_input);
 int intro_frontend(void);
 int user_handler(void);
-int answer_handling(char *input);
-int read_profile_data(profile *data_array) { /* Stub function */
+int answer_handling(char input);
+int read_profile_data(profile *profiles);  /* Stub function */
 int profile_prompt(void);
 void setup_profile(void);
 void init_profile(profile *profile_input);
@@ -39,9 +32,8 @@ int overview_message(void);
 int user_input(int input);
 int prompt_menu(int input);
 int interval_prompt(void);
-int interface_handler(int user_response);
-int intro_frontend(void);
-int menu_interface(double *data_array, int current_hour);
+int interface_handler(int user_response, profile *profile_array);
+int menu_interface(profile *profiles, double *data_array, int current_hour);
 double user_input_price(void);
 int price_prompt(void);
 double price_kwh(void);
@@ -66,18 +58,18 @@ int intro_frontend(void) {
   return 0;
 }
 
-int menu_interface(double *data_array, int current_hour) {
+int menu_interface(profile *profiles, double *data_array, int current_hour) {
   int user_response = 0;
   
   printf("Current price: %lf DKK/kWh - %lf%% green energy\n", get_current_price(data_array, current_hour)); /* Can fetch current price, but not green energy */
   user_response = prompt_menu(user_response);
   
-  interface_handler(user_response);
+  interface_handler(user_response, profiles);
 
   return 0;
 }
 
-int interface_handler(int user_response) {
+int interface_handler(int user_response, profile *profile_array) {
   int index = -1;
 
   switch (user_response) {
@@ -86,9 +78,8 @@ int interface_handler(int user_response) {
       break;
     */
     case 2:                                                                  /* DONE DONE */
-      index = read_profile_data(data_array);
-      simulate_electricity_usage(data_array[index].energy_label_wash, price_kwh());
-      simulate_electricity_usage(data_array[index].energy_label_dish, price_kwh());
+      index = read_profile_data(profile_array);
+      simulate_electricity_usage(profile_array[index].energy_label_wash, profile_array[index].energy_label_dish, price_kwh());
       break;
     /*
       case 3:
@@ -103,7 +94,7 @@ int interface_handler(int user_response) {
 }
 
 double price_kwh(void){
-  return price_prompt;
+  return price_prompt();
 }
 
 int price_prompt(void){
@@ -214,14 +205,20 @@ int answer_handling(char input) {
   return 0;
 }
 
-int read_profile_data(profile *data_array) { /* Stub function */
+void validate_filepointer(void* input_filepointer) {
+  if (input_filepointer == NULL) {
+    error_handler(7);
+  }
+}
+
+int read_profile_data(profile *profiles) { /* Stub function */
   int local_max_array_lgt = 100, 
       i,
       local_max_entries,
       index = 0;
   FILE *fp_profile = fopen("profile_data.txt", "r");
   char *current_str = calloc(local_max_array_lgt, sizeof(char));
-  validate_filepointer(fp);
+  validate_filepointer(fp_profile);
   validate_allocation(current_str);
   
 
@@ -229,12 +226,13 @@ int read_profile_data(profile *data_array) { /* Stub function */
   for (i = 0, local_max_entries = 10; i < local_max_entries; ++i) { 
     if (fgets(current_str, local_max_array_lgt, fp_profile) != NULL){
       sscanf(current_str, "Username: %s, Energy label washing machine: %s, Energy label dishwasher: %s", 
-                           data_array[i].profile_name, 
-                           data_array[i].energy_label_wash, 
-                           data_array[i].energy_label_dish);
+                           profiles[i].profile_name, 
+                           profiles[i].energy_label_wash, 
+                           profiles[i].energy_label_dish);
     }
   }
 
+  fclose(fp_profile);
   free(current_str);
   return index;
 }

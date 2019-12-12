@@ -5,8 +5,8 @@ CFLAGS = -Wall -ansi -pedantic
 TARGET = Entry
 DEP_1 = Utility
 DEP_2 = Get_Data
-DEP_3 = $(User_Dialogue/User_Dialogue)
-DEP_4 = $(Simulate_House/White_Goods)
+DEP_3 = User_Dialogue
+DEP_4 = White_Goods
 
 $(TARGET).exe: $(TARGET).c $(DEP_1).o $(DEP_2).o $(DEP_3).o $(DEP_4).o
 	$(CC) $(CFLAGS) $(TARGET).c -o $(TARGET).exe

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "White_goods.h"
 
 /* The values for the energy labels and the max length of arrays are defined.
    AW is for washing machines and AD is for dishwasher*/
@@ -17,11 +18,10 @@
 /*Prototyper for funktioner.*/
 void function_washing_machine(char* energy_label_wash, double user_price);
 void function_dishwasher(char* energy_label_dish, double user_price);
-void function_electricity_usage(char* energy_label_wash, char* energy_label_dish, double user_price);
 
 int main(void) {
 
-  function_electricity_usage(energy_label_dish, energy_label_wash, user_price);
+  simulate_electricity_usage(energy_label_dish, energy_label_wash, user_price);
 
   return 0;
 }
@@ -93,7 +93,7 @@ void function_washing_machine(char* energy_label_wash, double user_price) {
   }
 }
 /* This function calls both functions*/
-void function_electricity_usage(char* energy_label_dish, char* energy_label_wash, double user_price) {
+void simulate_electricity_usage(char* energy_label_dish, char* energy_label_wash, double user_price) {
 
   function_washing_machine( energy_label_wash, user_price);
   function_dishwasher( energy_label_dish, user_price);
