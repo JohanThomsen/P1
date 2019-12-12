@@ -27,30 +27,20 @@ void function_dishwasher(char* energy_label_dish, double user_price);
 
 void function_dishwasher(char* energy_label_dish, double user_price) {
 
-  double kWh_pr_use;
-  double kr_pr_use;
   if(strcmp(energy_label_dish, "A") == 0) {
-    kWh_pr_use = AD_VALUE;
-    kr_pr_use = kWh_pr_use * user_price;
-    printf("Your dishwasher consume %.2f kWh/per use and cost %.2f kr/per use\n", kWh_pr_use, kr_pr_use);
+    printf("Your dishwasher consume %.2f kWh/per use and cost %.2f kr/per use\n", AD_VALUE, user_price*AD_VALUE);
   }
   else if(strcmp(energy_label_dish, "A+") == 0) {
-    kWh_pr_use = ADP_VALUE;
-    kr_pr_use = kWh_pr_use * user_price;
-    printf("Your dishwasher consume %.2f kWh/per use and cost %.2f kr/per use\n", kWh_pr_use, kr_pr_use);
+    printf("Your dishwasher consume %.2f kWh/per use and cost %.2f kr/per use\n", ADP_VALUE, user_price*ADP_VALUE);
   }
   else if(strcmp(energy_label_dish, "A++") == 0) {
-    kWh_pr_use = ADPP_VALUE;
-    kr_pr_use = kWh_pr_use * user_price;
-    printf("Your dishwasher consume %.2f kWh/per use and cost %.2f kr/per use\n", kWh_pr_use, kr_pr_use);
+    printf("Your dishwasher consume %.2f kWh/per use and cost %.2f kr/per use\n", ADPP_VALUE, user_price*ADPP_VALUE);
   }
   else if(strcmp(energy_label_dish, "A+++") == 0) {
-    kWh_pr_use = ADPPP_VALUE;
-    kr_pr_use = kWh_pr_use * user_price;
-    printf("Your dishwasher consume %.2f kWh/per use and cost %.2f kr/per use\n", kWh_pr_use, kr_pr_use);
+    printf("Your dishwasher consume %.2f kWh/per use and cost %.2f kr/per use\n", ADPPP_VALUE, user_price*ADPPP_VALUE);
   }
   else {
-    printf("Wrong input");
+    printf("Wrong input\n");
   }
 }
 /* This function calculates the price pr use for a washing machine. The function contains
@@ -60,31 +50,20 @@ void function_dishwasher(char* energy_label_dish, double user_price) {
 
 void function_washing_machine(char* energy_label_wash, double user_price) {
 
-  double kWh_pr_use = 0.0;
-  double kr_pr_use = 0.0;
-
   if(strcmp(energy_label_wash, "A") == 0) {
-    kWh_pr_use = AW_VALUE;
-    kr_pr_use = kWh_pr_use * user_price;
-    printf("Your washing machine consume %.2f kWh/per use and cost %.2f kr/per use\n", kWh_pr_use, kr_pr_use);
+    printf("Your washing machine consume %.2f kWh/per use and cost %.2f kr/per use\n", AD_VALUE, user_price*AD_VALUE);
   }
   else if(strcmp(energy_label_wash, "A+") == 0) {
-    kWh_pr_use = APW_VALUE;
-    kr_pr_use = kWh_pr_use * user_price;
-    printf("Your washing machine consume %.2f kWh/per use and cost %.2f kr/per use\n", kWh_pr_use, kr_pr_use);
+    printf("Your washing machine consume %.2f kWh/per use and cost %.2f kr/per use\n", ADP_VALUE, user_price*ADP_VALUE);
   }
   else if(strcmp(energy_label_wash, "A++") == 0) {
-    kWh_pr_use = APPW_VALUE;
-    kr_pr_use = kWh_pr_use * user_price;
-    printf("Your washing machine consume %.2f kWh/per use and cost %.2f kr/per use\n", kWh_pr_use, kr_pr_use);
+    printf("Your washing machine consume %.2f kWh/per use and cost %.2f kr/per use\n", ADPP_VALUE, user_price*ADPP_VALUE);
   }
   else if(strcmp(energy_label_wash, "A+++") == 0) {
-    kWh_pr_use = APPPW_VALUE;
-    kr_pr_use = kWh_pr_use * user_price;
-    printf("Your washing machine consume %.2f kWh/per use and cost %.2f kr/per use\n", kWh_pr_use, kr_pr_use);
+    printf("Your washing machine consume %.2f kWh/per use and cost %.2f kr/per use\n", ADPPP_VALUE, user_price*ADPPP_VALUE);
   }
   else {
-    printf("Wrong input");
+    printf("Wrong input\n");
   }
 }
 /* This function calls both functions*/

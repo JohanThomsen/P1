@@ -86,22 +86,17 @@ double renewable_average (renewable *renewable_array)
 }
 
 /* Adding up prices in specified interval, dividing to find average and finding highest and lowest price  */
-double saving_average (double *price_interval_array, int start_interval2, int end_interval2)
-{
-  double sum=0;
-  int i, interval2;
-
-  printf("Specify your hour interval for price: ");
-  scanf(" %d %d",&start_interval2,&end_interval2);
-  
-  for (i = start_interval2; i < end_interval2; i++){
+double saving_average (double *price_interval_array, int interval, int current_hour){
+  double sum;
+  int      i,
+           hour_interval = interval + current_hour;
+ 
+  for (i = current_hour, sum = 0; i < hour_interval; i++){
       sum += price_interval_array[i];        
-    }
+  }  
+  sum /= interval;
   
-  interval2 = end_interval2 - start_interval2;
-    
-  sum /= interval2;
-  return sum/10;
+  return sum;
 }
 double highest_price_in_interval(double *price_interval_array, int interval, int current_hour){
   int i,
@@ -114,7 +109,7 @@ double highest_price_in_interval(double *price_interval_array, int interval, int
       }  
   }
   
-  return temp_high/10;
+  return temp_high;
 }
 
 double lowest_price_in_interval(double *price_interval_array, int interval, int current_hour){
@@ -128,5 +123,5 @@ double lowest_price_in_interval(double *price_interval_array, int interval, int 
       }  
   }
   
-  return temp_low/10;
+  return temp_low;
 }

@@ -20,8 +20,10 @@ int    prompt_menu           (int input);
 int    user_input            (int input);
 int    overview_message      (void);
 int    interface_handler     (int user_response, profile *profile_array, double *data_array);
+void   electricity_overview  (double *data_array, int interval);
+void   print_data_array      (double *data_array, int interval, int current_hour);
 double price_kwh             (double *data_array);
-int    price_prompt          (double *data_array);
+double price_prompt          (double *data_array);
 double user_input_price      (void);
 int    interval_prompt       (void);
 
@@ -196,9 +198,8 @@ int overview_message(void) {
   printf(" '2'  to simulate electricity-usage based on profile information\n");
   printf(" '3'  to see price difference between set-price and variable-price subscriptions\n");
   printf(" '-1' to exit\n");
-  printf("-----------------------------------------------------------------------------------\n");
-  printf("\nInput: ");
-  putchar('\n');
+  printf("-----------------------------------------------------------------------------------\n\n");
+  printf("Input: ");
   return 0;
 }
 
@@ -211,10 +212,10 @@ int interface_handler(int user_response, profile *profile_array, double *data_ar
   int index = -1;
 
   switch (user_response) {
-    /*case 1:
-      electricity_overview(interval_prompt());                                Analyze data - NOT INCLUDED YET 
+    case 1:
+      electricity_overview(data_array, interval_prompt());
       break;
-    */
+    
     case 2:                                                                  /* DONE DONE */
       index = read_profile_data(profile_array);
       simulate_electricity_usage(profile_array[index].energy_label_wash, profile_array[index].energy_label_dish, price_kwh(data_array));
@@ -230,17 +231,43 @@ int interface_handler(int user_response, profile *profile_array, double *data_ar
   }
   return 0;
 }
+      
+void electricity_overview(double *data_array, int interval){
+  int current_hour = get_current_hour();
+  
+  
+  printf("-----------------------------------------------------------------------------------\n");
+  print_data_array(data_array, interval, current_hour);
+  printf("-----------------------------------------------------------------------------------\n");
+  printf("Average: %2.2f DKK/kWh\n", saving_average(data_array, interval, current_hour));
+  printf("Mininum: %2.2f DKK/kWh\n", lowest_price_in_interval(data_array, interval, current_hour));
+  printf("Maximum: %2.2f DKK/kWh\n", highest_price_in_interval(data_array, interval, current_hour));
+  printf("-----------------------------------------------------------------------------------\n");
+
+}
+
+/* Input : Double data_array, int current_hour, int interval
+ * No Output:
+ * Method: Prints data_array of prices from current time, and inputted interval amount of hours forward */
+void print_data_array(double *data_array, int interval, int current_hour){
+  int i;
+  interval += current_hour;
+
+  for (i = current_hour; i < interval; ++i){
+    printf("%2.2d:00 = %2.2f DKK/kWh\n", (i % 24), data_array[i]);
+  }
+}
 
 double price_kwh(double *data_array){
   return price_prompt(data_array);
 }
 
-int price_prompt(double *data_array){
+double price_prompt(double *data_array){
   char answer = 'n';
   int scanres = 0;
   double result = 0;
 
-  printf("To calculate price of electricity usage the price of electricity in DKK/kWh is needed.\nDo you want to use the cheapest price within the next 24 hours, or manually input price?\n'C' for Cheapeast price, 'M' for Manual price: ");
+  printf("To calculate price of electricity usage the price of electricity in DKK/kWh is needed.\nDo you want to use the cheapest price within the next 24 hours, or manually input price?\n'C' for Cheapest price, 'M' for Manual price: ");
   scanres = scanf(" %c", &answer);
  
   if (scanres == 1){ 
@@ -260,8 +287,8 @@ int price_prompt(double *data_array){
 
 int interval_prompt(void) {
   int interval = 0,
-      scanres = 0;
-  printf("Input interval for which the prices should be shown (1-24): \n");
+      scanres  = 0;
+  printf("Input interval for which the prices should be shown (1-24): ");
   scanres = scanf(" %d", &interval);
 
   if(scanres != 1) {

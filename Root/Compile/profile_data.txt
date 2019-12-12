@@ -35,3 +35,15 @@ Username: Placeholder_Username, Energy label washing machine: A++, Energy label 
 Username: ccc, Energy label washing machine: A+, Energy label dishwasher: A+
 Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
 Username: mm, Energy label washing machine: A+, Energy label dishwasher: A+
+Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
+Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
+Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
+Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
+Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
+Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
+Username: Johan, Energy label washing machine: A+, Energy label dishwasher: A
+Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
+Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
+Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
+Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
+Username: Alexa, Energy label washing machine: A++, Energy label dishwasher: A+++
