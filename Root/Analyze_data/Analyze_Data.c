@@ -4,13 +4,16 @@
 #include <time.h>
 #include "analyze_data.h"
 
+#define INIT_VALUE_LOW 1000
+#define INIT_VALUE_HIGH 0
 int main(void)
 {
     FILE *ifp = fopen("green_energy.txt", "r");
     char *current_string = (char*)calloc(100, sizeof(char));
     renewable renewable_array[144];
     int start_interval2, end_interval2;
-    double low_price, high_price;
+    double low_price = INIT_VALUE_LOW,
+           high_price = INIT_VALUE_HIGH;
 
     read_file(ifp, current_string, renewable_array);
     
@@ -22,10 +25,10 @@ int main(void)
     };
   
   printf("Average renewable energy in time interval: %f percent\n",renewable_average(renewable_array));
-  printf("\nAverage price in time interval: %.2f DKK/kWh\n",saving_average(price_interval_array, start_interval2, end_interval2, &low_price, &high_price));
+  printf("\nAverage price in time interval: %.2f DKK/kWh\n",saving_average(price_interval_array, start_interval2, end_interval2));
 
-  printf("Max price in time interval: %.2f DKK/kWh\n",high_price/10);
-  printf("Min price in time interval: %.2f DKK/kWh\n",low_price/10);
+  printf("Max price in time interval: %.2f DKK/kWh\n",highest_price_in_interval(price_interval_array, high_price, 10, 10));
+  printf("Min price in time interval: %.2f DKK/kWh\n",lowest_price_in_interval(price_interval_array, low_price, 10, 10));
 
   free(current_string);
   fclose(ifp);
@@ -38,12 +41,10 @@ void read_file(FILE *ifp, char *current_string, renewable *renewable_array)
 {
   int i=0, j=0;
 
-  if (ifp != NULL)
-  {
+  if (ifp != NULL){
     current_string = fgets(current_string,100,ifp);
     
-    while (current_string != NULL)
-    {
+    while (current_string != NULL){
       sscanf(current_string,
       " %lf,"
       " %lf," 
@@ -74,8 +75,7 @@ double renewable_average (renewable *renewable_array)
   printf("Specify your hour interval for green energy: ");
   scanf(" %d %d",&start_interval, &end_interval);
   
-  for (i=start_interval;i < end_interval; i++)
-    {
+  for (i=start_interval;i < end_interval; i++){
       printf("\n%f",renewable_array[i].other_renewable );
       renewable_sum += (renewable_array[i].hydro_power + renewable_array[i].other_renewable + renewable_array[i].solar_power
 	            + renewable_array[i].onshore_windpower + renewable_array[i].offshore_windpower) / renewable_array[i].total_load;
@@ -86,29 +86,16 @@ double renewable_average (renewable *renewable_array)
 }
 
 /* Adding up prices in specified interval, dividing to find average and finding highest and lowest price  */
-double saving_average (double price_interval_array[], int start_interval2, int end_interval2, double *temp_low, double *temp_high)
+double saving_average (double *price_interval_array, int start_interval2, int end_interval2)
 {
   double sum=0;
   int i, interval2;
-  *temp_low = 1000;
-  *temp_high = 0;
 
   printf("Specify your hour interval for price: ");
   scanf(" %d %d",&start_interval2,&end_interval2);
   
-  for (i = start_interval2; i < end_interval2; i++)
-    {
-      sum += price_interval_array[i];
-      
-      if (price_interval_array[i] < *temp_low)
-      {
-        *temp_low = price_interval_array[i];
-      }
-
-      if (price_interval_array[i] > *temp_high)
-      {
-        *temp_high = price_interval_array[i];
-      }      
+  for (i = start_interval2; i < end_interval2; i++){
+      sum += price_interval_array[i];        
     }
   
   interval2 = end_interval2 - start_interval2;
@@ -116,4 +103,26 @@ double saving_average (double price_interval_array[], int start_interval2, int e
   sum /= interval2;
   return sum/10;
 }
+double highest_price_in_interval(double *price_interval_array, double temp_high, int interval, int current_hour){
+  int i,
+      hour_interval = interval + current_hour;
+  for ( i = current_hour; i < hour_interval; i++){
+    if (price_interval_array[i] > temp_high){
+        temp_high = price_interval_array[i];
+      }  
+  }
+  
+  return temp_high/10;
+}
 
+double lowest_price_in_interval(double *price_interval_array, double temp_low, int interval, int current_hour){
+  int i,
+      hour_interval = interval + current_hour;
+  for ( i = current_hour; i < hour_interval; i++){
+    if (price_interval_array[i] < temp_low){
+        temp_low = price_interval_array[i];
+      }  
+  }
+  
+  return temp_low/10;
+}
