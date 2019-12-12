@@ -71,7 +71,7 @@ void function_washing_machine(char* energy_label_wash, double user_price) {
   else if(strcmp(energy_label_wash, "A+") == 0) {
     kWh_pr_use = APW_VALUE;
     kr_pr_use = kWh_pr_use * user_price;
-    printf("Your washing machine consume %.2f kWh/per use %.2f and cost kr/per use\n", kWh_pr_use, kr_pr_use);
+    printf("Your washing machine consume %.2f kWh/per use and cost %.2f kr/per use\n", kWh_pr_use, kr_pr_use);
   }
   else if(strcmp(energy_label_wash, "A++") == 0) {
     kWh_pr_use = APPW_VALUE;

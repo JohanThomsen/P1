@@ -20,12 +20,10 @@ int user_input(int input);
 int overview_message(void);
 int answer_handling(char input, profile *profile_array);
 int user_handler(profile *profile_array);
-void validate_filepointer(void* input_filepointer);
 int read_profile_data(profile *profiles);
-int profile_prompt(void);
-void setup_profile(void);
+int profile_prompt(profile *profile_array);
 void init_profile(profile *profile_input);
-void create_profile(profile *profile_input, char **energy_label);
+void create_profile(profile *profile_input);
 void check_fp(FILE *file_pointer);
 int compare_labels(char* user_label, char **energy_label_input);
 void user_name(char* name);
@@ -42,7 +40,7 @@ int intro_frontend(profile *profile_array) {
 int menu_interface(profile *profiles, double *data_array) {
   int user_response = 0;
   
-  printf("Current price: %lf DKK/kWh - %lf%% green energy\n", get_current_price(data_array, get_current_hour())); /* Can fetch current price, but not green energy */
+  printf("Current price: %lf DKK/kWh - %lf%% green energy\n\n", get_current_price(data_array, get_current_hour())); /* Can fetch current price, but not green energy */
   user_response = prompt_menu(user_response);
   
   interface_handler(user_response, profiles, data_array);
@@ -92,10 +90,10 @@ int price_prompt(double *data_array){
     } else if (answer == 'M' || answer == 'm') {
       result = user_input_price();
     } else {
-      error_handler(1); /* Invalid input error */
+      error_handler(1, __LINE__, __FILE__); /* Invalid input error */
     }
   } else {
-    error_handler(3);
+    error_handler(3, __LINE__, __FILE__);
   }
 
   return result;
@@ -110,7 +108,7 @@ double user_input_price(void){
   scanres = scanf(" %lf", &input);
   
   if (scanres != 1) {
-    error_handler(3); /* Too many scanf conversions */
+    error_handler(3, __LINE__, __FILE__); /* Too many scanf conversions */
   } else {
     price = input;
   }
@@ -122,14 +120,14 @@ double user_input_price(void){
 int interval_prompt(void) {
   int interval = 0,
       scanres = 0;
-  printf("Input interval for which the prices should be shown (1-24): ");
+  printf("Input interval for which the prices should be shown (1-24): \n");
   scanres = scanf(" %d", &interval);
 
   if(scanres != 1) {
-    error_handler(3); /* Too many scanf conversions */
+    error_handler(3, __LINE__, __FILE__); /* Too many scanf conversions */
   }
-  if(scanres == 1 && interval > 0 && interval <= 24) {
-    error_handler(5); /* Interval out of bounds - should be between 1 and 24 */
+  if(scanres == 1 && (interval < 0 || interval > 24)) {
+    error_handler(5, __LINE__, __FILE__); /* Interval out of bounds - should be between 1 and 24 */
   }
 
   return interval;
@@ -150,19 +148,21 @@ int user_input(int input) {
 
 
 int overview_message(void) {
-  printf("See the list below and enter the corresponding number for each usecae: \n");
-  printf("-------------------------------------------------------------------------");
+  printf("See the list below and enter the corresponding number for each usecase: \n");
+  printf("-----------------------------------------------------------------------------------\n");
   printf(" '1'  to see overview of electricity and its composition in a userdefined interval\n");
   printf(" '2'  to simulate electricity-usage based on profile information\n");
   printf(" '3'  to see price difference between set-price and variable-price subscriptions\n");
-  printf(" '-1' to exit");
-  printf("-------------------------------------------------------------------------");
+  printf(" '-1' to exit\n");
+  printf("-----------------------------------------------------------------------------------\n");
+  printf("\nInput: ");
+  putchar('\n');
   return 0;
 }
 
 int user_handler(profile *profile_array) {
   char answer = '\0';
-  printf("Do you have a profile? [Y/n]"); 
+  printf("\nDo you have a profile? [Y/n] "); 
   scanf(" %c", &answer);
   
   answer_handling(answer, profile_array);
@@ -176,19 +176,13 @@ int answer_handling(char input, profile *profile_array) {
   if (answer == 'Y' || answer == 'y') {
     read_profile_data(profile_array); /* Stub function */
   } else if (answer == 'N' || answer == 'n') {
-    profile_prompt();
+    profile_prompt(profile_array);
     
   } else {
-    error_handler(1); /* Invalid input error handling */
+    error_handler(1, __LINE__, __FILE__); /* Invalid input error handling */
   }
 
   return 0;
-}
-
-void validate_filepointer(void* input_filepointer) {
-  if (input_filepointer == NULL) {
-    error_handler(7);
-  }
 }
 
 int read_profile_data(profile *profiles) { /* Stub function */
@@ -198,7 +192,7 @@ int read_profile_data(profile *profiles) { /* Stub function */
       index = 0;
   FILE *fp_profile = fopen("profile_data.txt", "r");
   char *current_str = calloc(local_max_array_lgt, sizeof(char));
-  validate_filepointer(fp_profile);
+  check_fp(fp_profile);
   validate_allocation(current_str);
   
 
@@ -218,29 +212,21 @@ int read_profile_data(profile *profiles) { /* Stub function */
 }
 
 
-int profile_prompt(void) {
+int profile_prompt(profile *profile_array) {
   char answer = '\0';
-  printf("Do you want to create a profile? [Y/n] ");
+  printf("\nDo you want to create a profile? [Y/n] ");
   scanf(" %s", &answer);
   if (answer == 'Y' || answer == 'y') {
-    setup_profile();
+    create_profile(profile_array);
   } else if (answer == 'N' || answer == 'n') {
     return 0;
   } else {
-    error_handler(1); /* Invalid input error handling */
+    error_handler(1, __LINE__, __FILE__); /* Invalid input error handling */
   }
 
   return 0;
 }
 
-void setup_profile(void) {
-  char *energy_label[MAX_LABEL_LENGTH] = {"A+++", "A++", "A+", "A"};
-  profile *profile_input = calloc(MAX_USERS, sizeof(profile));
-
-  init_profile(profile_input);
-
-  create_profile(profile_input, energy_label);
-}
 
 void init_profile(profile *profile_input) {
   FILE *fp = fopen("profile_data.txt", "a+");
@@ -252,18 +238,22 @@ void init_profile(profile *profile_input) {
                                                                "A++",
                                                                "A+++");
 
+
   fclose(fp);
 }
 
 void check_fp(FILE *file_pointer) { /* Utility function */
   if (file_pointer == NULL) {
-    error_handler(2); /* Could not open or access the desired file */
+    error_handler(2, __LINE__, __FILE__); /* Could not open or access the desired file */
   }
 }
 
 
-void create_profile(profile *profile_input, char **energy_label) {  /* Nominated for header */
+void create_profile(profile *profile_input) {  /* Nominated for header */
     FILE *fp = fopen("profile_data.txt", "a+");
+    char *energy_label[MAX_LABEL_LENGTH] = {"A+++", "A++", "A+", "A"};
+  
+    validate_allocation(profile_input);
     check_fp(fp);
 
     user_name(profile_input->profile_name);
@@ -277,7 +267,7 @@ void create_profile(profile *profile_input, char **energy_label) {  /* Nominated
                                                                    profile_input->energy_label_wash,
                                                                    profile_input->energy_label_dish);
 
-      printf("You succesfully entered energy_label_wash\n" );
+      printf("You succesfully entered energy_label_wash\n\n" );
     }
     if (compare_labels(profile_input->energy_label_wash, energy_label) != 1) {
       printf("Failed to input wash label..\n");
@@ -306,23 +296,23 @@ int compare_labels(char* user_label, char** energy_label_input) {
 
 void user_name(char* name) {
   int scanres = 0;
-  printf("Enter username (max 20 characters): ");
+  printf("\nEnter username (max 20 characters): \n");
   scanres = scanf(" %s", name);
 
   if(scanres != 1) {
-    error_handler(3); /* Too many scanf conversions */
+    error_handler(3, __LINE__, __FILE__); /* Too many scanf conversions */
   }
   if(scanres == 1 && strlen(name) > MAX_NAME_LENGTH) {
-    error_handler(4); /* Too long user name - MAX 20 characters */
+    error_handler(4, __LINE__, __FILE__); /* Too long user name - MAX 20 characters */
   }
 }
 
 void energy_label_function(char* energy_label) {
   int scanres = 0;
-  printf("Enter energy label (A, A+, A++, A+++): ");
+  printf("\nEnter energy label (A, A+, A++, A+++): ");
   scanres = scanf(" %s", energy_label);
 
   if(scanres != 1) {
-    error_handler(3); /* Too many scanf conversions */
+    error_handler(3, __LINE__, __FILE__); /* Too many scanf conversions */
   }
 }
