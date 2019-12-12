@@ -1,5 +1,5 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "Utility.h"
 #include "Get_Data.h"
 #include "User_Dialogue.h"
@@ -7,10 +7,10 @@
 
 int main(void) {
   double* data_array = calloc(HOURS_IN_TWO_DAYS, sizeof(double));
-  FILE *fp_day_hour = NULL;
+  FILE        *fp_day_hour = NULL;
   time_of_day current_time,
-               saved_time;
-  profile *profile_array = calloc(MAX_USERS, sizeof(profile));
+              saved_time;
+  profile     *profile_array = calloc(MAX_USERS, sizeof(profile));
 
 
 

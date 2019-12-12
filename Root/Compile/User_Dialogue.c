@@ -9,23 +9,23 @@
 
 
 
-int user_handler(profile *profile_array);
+int    user_handler          (profile *profile_array);
+int    answer_handling       (char input, profile *profile_array);
+int    profile_prompt        (profile *profile_array);
+void   create_profile        (profile *profile_input);
+void   user_name             (char* name);
+void   energy_label_function (char* energy_label);
+int    compare_labels        (char* user_label, char **energy_label_input);
+int    prompt_menu           (int input);
+int    user_input            (int input);
+int    overview_message      (void);
+int    interface_handler     (int user_response, profile *profile_array, double *data_array);
+double price_kwh             (double *data_array);
+int    price_prompt          (double *data_array);
+double user_input_price      (void);
+int    interval_prompt       (void);
 
-int interface_handler(int user_response, profile *profile_array, double *data_array);
-double price_kwh(double *data_array);
-int price_prompt(double *data_array);
-double user_input_price(void);
-int interval_prompt(void);
-int prompt_menu(int input);
-int user_input(int input);
-int overview_message(void);
-int answer_handling(char input, profile *profile_array);
-int profile_prompt(profile *profile_array);
-void create_profile(profile *profile_input);
-void check_fp(FILE *file_pointer);
-int compare_labels(char* user_label, char **energy_label_input);
-void user_name(char* name);
-void energy_label_function(char* energy_label);
+
 
 int intro_frontend(profile *profile_array) {
   
