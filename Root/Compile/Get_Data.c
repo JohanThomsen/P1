@@ -38,7 +38,7 @@ void read_from_saved_prices(double *data_array, FILE *fp_saved_prices){
 }
 
 /* Input : double data_array.
- * Output: data_array filled with 48 hours of prices, from saved seed_data file 
+ * Output: data_array filled with 48 hours of prices, from saved seed_data file x
  * Method: Creates a file pointer to the file "seed_data.txt" and checks if it is there. If it isnt it exits the program as nothing would work if it does not exist
  * If it finds the file it puts the prices into the data array via a for loop and fscanf */
 void read_from_seed_data (double *data_array){
