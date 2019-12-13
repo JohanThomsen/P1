@@ -1,58 +1,44 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "Utility.h"
 
 void error_handler(int error_code, int line_number, char *file) {
-  switch (error_code) {
-    case 1:
-      printf("Error_code: %.2d in '%s' on line '%d' - Invalid input\n", error_code, file, line_number);
-      break;
+  char *errors[] = {"NULL Pointer",
+                    "Invalid input",
+                    "Could not find or open desired file",
+                    "Too many or too few scanf() conversions",
+                    "Too many input characters",
+                    "Index out of bounds",
+                    };
 
-    case 2:
-      printf("Error_code: %.2d in '%s' on line '%d' - Could not find or open desired file\n", error_code, file, line_number);
-      break;
-
-    case 3:
-      printf("Error_code: %.2d in '%s' on line '%d' - Too many or too few scanf() conversions\n", error_code, file, line_number);
-      break;
-
-    case 4:
-      printf("Error_code: %.2d in '%s' on line '%d' - Too many input characters\n", error_code, file, line_number);
-      break;
-    
-    case 5:
-      printf("Error_code: %.2d in '%s' on line '%d' - Index out of bounds\n", error_code, file, line_number);
-      break;
-
-    case 6:
-      printf("Error_code: %.2d in '%s' on line '%d' - NULL Pointer\n", error_code, file, line_number);
-      break;
-
-  }
+  printf("Error_code: %.2d %s in '%s' on line '%.2d'\n", error_code, errors[error_code], file, line_number);
+  exit(EXIT_FAILURE);
 }
 
-void validate_allocation(void* input_pointer) {
+void* validate_allocation(void* input_pointer, int line_number, char *file) {
   if (input_pointer == NULL) {
-    error_handler(6, __LINE__, __FILE__); /* NULL POINTER */
+    error_handler(0, line_number, file); /* NULL POINTER */
   }
+  return input_pointer;
 }
 
 void init_profile(profile *profile_input) {
   FILE *fp = fopen("profile_data.txt", "a+");
   
-  check_fp(fp);
+  check_fp(fp, __LINE__, __FILE__);
 
-  fprintf(fp, "Username: %s, Energy label washing machine: %s, Energy label dishwasher: %s\n",
-                                                               "Placeholder_Username",
-                                                               "A++",
-                                                               "A+++");
+  fprintf(fp, "Username: %s , Washer: %s , Dishwasher: %s\n",
+                                         "Holder_Username",
+                                         "A++",
+                                         "A+++");
 
 
   fclose(fp);
 }
 
-void check_fp(FILE *file_pointer) { /* Utility function */
+void check_fp(FILE *file_pointer, int line_number, char *file) { /* Utility function */
   if (file_pointer == NULL) {
-    error_handler(2, __LINE__, __FILE__); /* Could not open or access the desired file */
+    error_handler(2, line_number, file); /* Could not open or access the desired file */
   }
 }
 

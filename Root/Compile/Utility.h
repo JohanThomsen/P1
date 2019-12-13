@@ -9,7 +9,19 @@ typedef struct {
 } profile;
 
 void error_handler       (int error_code, int line_number, char *file);
-void validate_allocation (void* input_pointer);
+void* validate_allocation(void* input_pointer, int line_number, char *file);
 void init_profile        (profile *profile_input);
-void check_fp            (FILE *file_pointer);
+void check_fp(FILE *file_pointer, int line_number, char *file);
 
+#define RENEW_ARRAY_SIZE 144
+
+typedef struct {
+  double total_load;
+  double hydro_power;
+  double other_renewable;
+  double solar_power;
+  double onshore_windpower;
+  double offshore_windpower;
+} renewable;
+
+void read_file           (renewable *renewable_array);

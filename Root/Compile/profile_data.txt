@@ -1,49 +1,41 @@
-Username: Alexasd, Energy label washing machine: A+++, Energy label dishwasher: A+++
-Username: Aekxas, Energy label washing machine: A, Energy label dishwasher: A
-Username: Alexaa, Energy label washing machine: A, Energy label dishwasher: A
-Username: Alexassd, Energy label washing machine: A, Energy label dishwasher: A++
-Username: MadsxXx, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: Alexads, Energy label washing machine: A++, Energy label dishwasher: A++
-Username: Alexa, Energy label washing machine: A, Energy label dishwasher: A++
-Username: Alexa, Energy label washing machine: A, Energy label dishwasher: A+++
-Username: ALexa, Energy label washing machine: A, Energy label dishwasher: A++
-Username: Alexaf, Energy label washing machine: A, Energy label dishwasher: A++
-Username: Alexadf, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: Alexasdsasd2, Energy label washing machine: A++, Energy label dishwasher: A
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: A++, Energy label washing machine: A+++, Energy label dishwasher: A
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: xXMadsXx, Energy label washing machine: A++, Energy label dishwasher: A+++
-
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: Alexander, Energy label washing machine: A, Energy label dishwasher: A++
-
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: Alexander, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: XxmadsxX, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: ccc, Energy label washing machine: A+, Energy label dishwasher: A+
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: mm, Energy label washing machine: A+, Energy label dishwasher: A+
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: Johan, Energy label washing machine: A+, Energy label dishwasher: A
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: Placeholder_Username, Energy label washing machine: A++, Energy label dishwasher: A+++
-Username: Alexa, Energy label washing machine: A++, Energy label dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: aaaaas, Energy label washing machine: A++, Energy label dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Hej, Energy label washing machine: A++, Energy label dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: sdlsdlsa, Energy label washing machine: A++, Energy label dishwasher: A+
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Alexa, Energy label washing machine: A+, Energy label dishwasher: A
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: XxmadsxX, Energy label washing machine: A++, Energy label dishwasher: A+

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include "Utility.h"
 #include "Analyze_Data.h"
 
 #define INIT_VALUE_LOW 1000
@@ -9,10 +10,7 @@
 /*
 int main(void)
 {
-    FILE *ifp = fopen("green_energy.txt", "r");
-    char *current_string = (char*)calloc(100, sizeof(char));
-    renewable renewable_array[144];
-    int start_interval2, end_interval2;
+    
 
     read_file(ifp, current_string, renewable_array);
     
@@ -37,52 +35,48 @@ int main(void)
 */
 
 /* Reading green_energy and assigning values to the renewable struct, which the renewable_array is created from */
-void read_file(FILE *ifp, char *current_string, renewable *renewable_array)
-{
-  int i=0, j=0;
+void read_file(renewable *renewable_array){
+  
+  int i = 0;
+  FILE *ifp = fopen("green_energy.txt", "r");
+  char *current_str = calloc(100, sizeof(char));
+  
+  validate_allocation(current_str, __LINE__, __FILE__);
+  check_fp(ifp, __LINE__, __FILE__);
 
-  if (ifp != NULL){
-    current_string = fgets(current_string,100,ifp);
-    
-    while (current_string != NULL){
-      sscanf(current_string,
-      " %lf,"
-      " %lf," 
-      " %lf,"
-      " %lf,"
-      " %lf,"
-      " %lf,",
-      &renewable_array[i].total_load,
-      &renewable_array[i].hydro_power,
-      &renewable_array[i].other_renewable,
-      &renewable_array[i].solar_power,
-      &renewable_array[i].onshore_windpower,
-      &renewable_array[i].offshore_windpower
-      );
-
-      current_string = fgets(current_string, 100, ifp);
-      i++;
-    }
+  while (fgets(current_str, 100, ifp) != NULL){
+    sscanf(current_str,
+          " %lf,"
+          " %lf," 
+          " %lf,"
+          " %lf,"
+          " %lf,"
+          " %lf,",
+          &renewable_array[i].total_load,
+          &renewable_array[i].hydro_power,
+          &renewable_array[i].other_renewable,
+          &renewable_array[i].solar_power,
+          &renewable_array[i].onshore_windpower,
+          &renewable_array[i].offshore_windpower);
+    i++;
   }
 }
 
-/* Adding up renewable production in specified interval, diving to find average */ 
-double renewable_average (renewable *renewable_array)
-{
-  double renewable_sum=0;
-  int i, start_interval, end_interval;
+/* Adding up renewable production in specified interval, dividing to find average */ 
+double renewable_average (renewable *renewable_array, int interval, int current_hour){
+  double renewable_sum,
+         renew_result = 0;
+  int i,
+      hour_interval = current_hour + interval;
   
-  printf("Specify your hour interval for green energy: ");
-  scanf(" %d %d",&start_interval, &end_interval);
+  for (i = current_hour, renewable_sum = 0; i < hour_interval; i++){
+
+    renewable_sum += (renewable_array[i].hydro_power + renewable_array[i].other_renewable + renewable_array[i].solar_power
+	              + renewable_array[i].onshore_windpower + renewable_array[i].offshore_windpower) / renewable_array[i].total_load;
+  }
   
-  for (i=start_interval;i < end_interval; i++){
-      printf("\n%f",renewable_array[i].other_renewable );
-      renewable_sum += (renewable_array[i].hydro_power + renewable_array[i].other_renewable + renewable_array[i].solar_power
-	            + renewable_array[i].onshore_windpower + renewable_array[i].offshore_windpower) / renewable_array[i].total_load;
-    }
-  
-  double print_renew = (renewable_sum/(end_interval-start_interval))*100;
-  return print_renew;
+  renew_result = renewable_sum / interval * 100;
+  return renew_result;
 }
 
 /* Adding up prices in specified interval, dividing to find average and finding highest and lowest price  */
@@ -124,4 +118,13 @@ double lowest_price_in_interval(double *price_interval_array, int interval, int 
   }
   
   return temp_low;
+}
+
+double get_current_price(double *data_array, int current_hour){
+  return data_array[current_hour];
+}
+
+double get_current_renewable_share(renewable *renewable_array, int current_hour){
+  return  (renewable_array[current_hour].hydro_power + renewable_array[current_hour].other_renewable + renewable_array[current_hour].solar_power + 
+           renewable_array[current_hour].onshore_windpower + renewable_array[current_hour].offshore_windpower) / renewable_array[current_hour].total_load * 100;
 }

@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "Utility.h"
 #include "Get_Data.h"
 #include "White_goods.h"
 #include "Analyze_Data.h"
-#include "Utility.h"
 #include "User_Dialogue.h"
 
 
@@ -31,10 +31,8 @@ int    interval_prompt       (void);
 
 int intro_frontend(profile *profile_array) {
   
-  printf("Welcome to A404s price evaluator\n");
-  user_handler(profile_array);
-
-  return 0;
+  printf("Welcome to A404s P1 Project solution\n");
+  return user_handler(profile_array);
 }
 
 int user_handler(profile *profile_array) {
@@ -42,9 +40,7 @@ int user_handler(profile *profile_array) {
   printf("\nDo you have a profile? [Y/n] "); 
   scanf(" %c", &answer);
   
-  answer_handling(answer, profile_array);
-
-  return 0;
+  return answer_handling(answer, profile_array);
 }
 
 int answer_handling(char input, profile *profile_array) {
@@ -69,14 +65,12 @@ int read_profile_data(profile *profiles) { /* Stub function */
       index = 0;
   FILE *fp_profile = fopen("profile_data.txt", "r");
   char *current_str = calloc(local_max_array_lgt, sizeof(char));
-  check_fp(fp_profile);
-  validate_allocation(current_str);
+  check_fp(fp_profile, __LINE__, __FILE__);
+  validate_allocation(current_str, __LINE__, __FILE__);
   
-
-  printf("Due to development deadline and project constraints, the user profile will be assumed to be the first entry in the profile_data.txt\n");
   for (i = 0, local_max_entries = 10; i < local_max_entries; ++i) { 
     if (fgets(current_str, local_max_array_lgt, fp_profile) != NULL){
-      sscanf(current_str, "Username: %s, Energy label washing machine: %s, Energy label dishwasher: %s", 
+      sscanf(current_str, " Username: %s , Washer: %s , Dishwasher: %s", 
                            profiles[i].profile_name, 
                            profiles[i].energy_label_wash, 
                            profiles[i].energy_label_dish);
@@ -108,8 +102,7 @@ void create_profile(profile *profile_input) {  /* Nominated for header */
     FILE *fp = fopen("profile_data.txt", "a+");
     char *energy_label[MAX_LABEL_LENGTH] = {"A+++", "A++", "A+", "A"};
   
-    validate_allocation(profile_input);
-    check_fp(fp);
+    check_fp(fp, __LINE__, __FILE__);
 
     user_name(profile_input->profile_name);
     energy_label_function(profile_input->energy_label_wash);
@@ -122,13 +115,12 @@ void create_profile(profile *profile_input) {  /* Nominated for header */
                                                                    profile_input->energy_label_wash,
                                                                    profile_input->energy_label_dish);
 
-      printf("You succesfully entered energy_label_wash\n\n" );
     }
     if (compare_labels(profile_input->energy_label_wash, energy_label) != 1) {
-      printf("Failed to input wash label..\n");
+      error_handler(1, __LINE__, __FILE__);
     }
     if (compare_labels(profile_input->energy_label_dish, energy_label) != 1) {
-      printf("Failed to input dish label..\n");
+      error_handler(1, __LINE__, __FILE__);
     }   
 
   fclose(fp);
@@ -172,15 +164,13 @@ void energy_label_function(char* energy_label) {
 }
 
 
-int menu_interface(profile *profiles, double *data_array) {
+int menu_interface(profile *profiles, double *data_array, renewable *renew_array) {
   int user_response = 0;
   
-  printf("Current price: %lf DKK/kWh - %lf%% green energy\n\n", get_current_price(data_array, get_current_hour())); /* Can fetch current price, but not green energy */
   user_response = prompt_menu(user_response);
   
-  interface_handler(user_response, profiles, data_array);
+  return interface_handler(user_response, profiles, data_array);
 
-  return 0;
 }
 
 int prompt_menu(int input) {
@@ -196,7 +186,7 @@ int overview_message(void) {
   printf("-----------------------------------------------------------------------------------\n");
   printf(" '1'  to see overview of electricity and its composition in a userdefined interval\n");
   printf(" '2'  to simulate electricity-usage based on profile information\n");
-  printf(" '3'  to see price difference between set-price and variable-price subscriptions\n");
+  printf(" '4'  to create profile\n");
   printf(" '-1' to exit\n");
   printf("-----------------------------------------------------------------------------------\n\n");
   printf("Input: ");
@@ -220,14 +210,13 @@ int interface_handler(int user_response, profile *profile_array, double *data_ar
       index = read_profile_data(profile_array);
       simulate_electricity_usage(profile_array[index].energy_label_wash, profile_array[index].energy_label_dish, price_kwh(data_array));
       break;
-    /*
-    case 3:
-      subscription_compare();                                   MISSING 
-      break;  
-    case -1:
-      exit_function();                                          MISSING
+    
+    case 4:
+      create_profile(profile_array);
       break;
-    */
+    case -1:
+      return -1;
+      break;
   }
   return 0;
 }
@@ -263,16 +252,19 @@ double price_kwh(double *data_array){
 }
 
 double price_prompt(double *data_array){
-  char answer = 'n';
-  int scanres = 0;
-  double result = 0;
+  char answer   = 'n';
+  int scanres   =   0,
+      interval  =   0;
+  double result =   0;
 
   printf("To calculate price of electricity usage the price of electricity in DKK/kWh is needed.\nDo you want to use the cheapest price within the next 24 hours, or manually input price?\n'C' for Cheapest price, 'M' for Manual price: ");
   scanres = scanf(" %c", &answer);
  
   if (scanres == 1){ 
     if (answer == 'C' || answer == 'c') {
-      result = lowest_price_in_interval(data_array, interval_prompt(), get_current_hour()); /* get_cheapest_price() er en del af Analyze_data modulet */
+      interval = interval_prompt();
+      result = lowest_price_in_interval(data_array, interval, get_current_hour()); /* get_cheapest_price() er en del af Analyze_data modulet */
+      electricity_overview(data_array, interval);
     } else if (answer == 'M' || answer == 'm') {
       result = user_input_price();
     } else {
@@ -317,4 +309,6 @@ double user_input_price(void){
 
   return price;
 }
-
+void print_current_price(double *data_array, int current_hour, renewable* renew_array){
+  printf("Current price: %2.2lf DKK/kWh - %2.2lf %% green energy\n\n", get_current_price(data_array, current_hour), get_current_renewable_share(renew_array, current_hour));
+}

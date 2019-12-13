@@ -43,7 +43,7 @@ void read_from_seed_data (double *data_array){
   int i;
   FILE *fp_seed_data = fopen("Seed_Data.txt", "r");
 
-  check_fp(fp_seed_data);
+  check_fp(fp_seed_data, __LINE__, __FILE__);
 
   for ( i = 0; i < HOURS_IN_TWO_DAYS; i++){
     fscanf(fp_seed_data, "%lf, ", &data_array[i]);
@@ -67,9 +67,7 @@ void find_saved_day_and_hour(FILE *fp_day_hour, time_of_day *saved_time, time_of
 
 
 
-double get_current_price(double *data_array, int current_hour){
-  return data_array[current_hour];
-}
+
 
 /* Input : File Pointer fp_day_hour, time_of_day struct pointer current_time
  * Output: An updated "day_hour_reset.txt"
@@ -79,7 +77,7 @@ void put_day_and_hour_into_txt(FILE *fp_day_hour, time_of_day *current_time){
 
   fp_day_hour = fopen("day_hour_reset.txt", "w");
 
-  check_fp(fp_day_hour);
+  check_fp(fp_day_hour, __LINE__, __FILE__);
 
   fprintf(fp_day_hour, "%d,%d,%d,%d", current_time->day, current_time->hour, current_time->month, current_time->year);
 
