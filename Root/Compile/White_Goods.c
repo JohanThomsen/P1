@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Utility.h"
-#include "White_goods.h"
+#include "Get_Data.h"
+#include "White_Goods.h"
 #include "User_Dialogue.h"
 
 /* The values for the energy labels and the max length of arrays are defined.
@@ -76,4 +77,5 @@ void function_washing_machine(char* energy_label_wash, double user_price) {
 void simulate_electricity_usage(char* energy_label_wash, char* energy_label_dish, double user_price) {
   function_washing_machine( energy_label_wash, user_price);
   function_dishwasher( energy_label_dish, user_price);
+  printf("-----------------------------------------------------------------------------------\n\n");
 }

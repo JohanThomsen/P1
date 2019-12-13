@@ -10,6 +10,7 @@
 void initialize(double *data_array, profile *profile_array, renewable *renewable_array, FILE *fp_day_hour, time_of_day *current_time, time_of_day *saved_time);
 void clean_exit(double *data_array, profile *profile_array, renewable *renewable_array);
 
+
 int main(void) {
   int         sentinel       = 0;
   FILE        *fp_day_hour   = NULL;
@@ -21,9 +22,8 @@ int main(void) {
 
   initialize(data_array, profile_array, renewable_array, fp_day_hour, &current_time, &saved_time);
   validate_allocation(data_array, __LINE__, __FILE__);
-  
-  intro_frontend(profile_array);
-  print_current_price(data_array, current_time.hour, renewable_array);
+
+  intro_frontend(profile_array, data_array, current_time, renewable_array);
   do {
     sentinel = menu_interface(profile_array, data_array, renewable_array);
   } while (sentinel != SENTINEL);

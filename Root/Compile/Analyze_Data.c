@@ -7,32 +7,6 @@
 
 #define INIT_VALUE_LOW 1000
 #define INIT_VALUE_HIGH 0
-/*
-int main(void)
-{
-    
-
-    read_file(ifp, current_string, renewable_array);
-    
-  double price_interval_array[] =
-    {
-     2.890, 2.910, 2.890, 2.920, 2.950, 3.040, 3.860, 4.520, 5.140, 4.920, 4.550, 4.530, 4.410, 4.410, 4.460, 4.530, 4.720, 5.300, 4.740, 4.170, 3.630,
-     3.250, 2.990, 2.880, 2.890, 2.910, 2.890, 2.920, 2.950, 3.040, 3.860, 4.520, 5.140, 4.920, 4.550, 4.530, 4.410, 4.410, 4.460, 4.530, 4.720, 5.300,
-     4.740, 4.170, 3.630, 3.250, 2.990, 2.880
-    };
-  
-  printf("Average renewable energy in time interval: %f percent\n",renewable_average(renewable_array));
-  printf("\nAverage price in time interval: %.2f DKK/kWh\n",saving_average(price_interval_array, start_interval2, end_interval2));
-
-  printf("Max price in time interval: %.2f DKK/kWh\n",highest_price_in_interval(price_interval_array, 10, 10));
-  printf("Min price in time interval: %.2f DKK/kWh\n",lowest_price_in_interval(price_interval_array, 10, 10));
-  
-  free(current_string);
-  fclose(ifp);
-  
-  return 0;
-}
-*/
 
 /* Reading green_energy and assigning values to the renewable struct, which the renewable_array is created from */
 void read_file(renewable *renewable_array){
@@ -95,7 +69,7 @@ double lowest_percent_renewable_in_interval(renewable *renewable_array, int inte
         temp_low = renewable_hour;
       }
   }
-  return temp_low;
+  return temp_low * 100;
 }
 
 double highest_percent_renewable_in_interval(renewable *renewable_array, int interval, int current_hour){
@@ -109,12 +83,12 @@ double highest_percent_renewable_in_interval(renewable *renewable_array, int int
     renewable_hour = (renewable_array[i].hydro_power + renewable_array[i].other_renewable + renewable_array[i].solar_power
                       + renewable_array[i].onshore_windpower + renewable_array[i].offshore_windpower) / renewable_array[i].total_load;
 
-    if (renewable_hour < temp_high)
+    if (renewable_hour > temp_high)
       {
         temp_high = renewable_hour;
       }
   }
-  return temp_high;
+  return temp_high * 100;
 }
 
 /* Adding up prices in specified interval, dividing to find average and finding highest and lowest price  */
