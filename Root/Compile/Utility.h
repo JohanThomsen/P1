@@ -10,8 +10,8 @@ typedef struct {
 
 void error_handler       (int error_code, int line_number, char *file);
 void* validate_allocation(void* input_pointer, int line_number, char *file);
-void init_profile        (profile *profile_input);
-void check_fp(FILE *file_pointer, int line_number, char *file);
+void init_profile        (void);
+void check_fp            (FILE *file_pointer, int line_number, char *file);
 
 #define RENEW_ARRAY_SIZE 144
 

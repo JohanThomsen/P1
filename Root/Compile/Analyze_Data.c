@@ -79,6 +79,44 @@ double renewable_average (renewable *renewable_array, int interval, int current_
   return renew_result;
 }
 
+double lowest_percent_renewable_in_interval(renewable *renewable_array, int interval, int current_hour){
+  int i,
+      hour_interval = interval + current_hour;
+  double temp_low = INIT_VALUE_LOW,
+         renewable_hour = 0;
+
+  for (i = current_hour; i < hour_interval; i++)
+  {
+    renewable_hour = (renewable_array[i].hydro_power + renewable_array[i].other_renewable + renewable_array[i].solar_power
+                      + renewable_array[i].onshore_windpower + renewable_array[i].offshore_windpower) / renewable_array[i].total_load;
+
+    if (renewable_hour < temp_low)
+      {
+        temp_low = renewable_hour;
+      }
+  }
+  return temp_low;
+}
+
+double highest_percent_renewable_in_interval(renewable *renewable_array, int interval, int current_hour){
+  int i,
+      hour_interval = interval + current_hour;
+  double temp_high = INIT_VALUE_HIGH,
+         renewable_hour = 0;
+
+  for (i = current_hour; i < hour_interval; i++)
+  {
+    renewable_hour = (renewable_array[i].hydro_power + renewable_array[i].other_renewable + renewable_array[i].solar_power
+                      + renewable_array[i].onshore_windpower + renewable_array[i].offshore_windpower) / renewable_array[i].total_load;
+
+    if (renewable_hour < temp_high)
+      {
+        temp_high = renewable_hour;
+      }
+  }
+  return temp_high;
+}
+
 /* Adding up prices in specified interval, dividing to find average and finding highest and lowest price  */
 double saving_average (double *price_interval_array, int interval, int current_hour){
   double sum;

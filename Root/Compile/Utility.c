@@ -22,7 +22,7 @@ void* validate_allocation(void* input_pointer, int line_number, char *file) {
   return input_pointer;
 }
 
-void init_profile(profile *profile_input) {
+void init_profile(void) {
   FILE *fp = fopen("profile_data.txt", "a+");
   
   check_fp(fp, __LINE__, __FILE__);

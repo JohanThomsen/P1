@@ -155,7 +155,7 @@ void user_name(char* name) {
 
 void energy_label_function(char* energy_label) {
   int scanres = 0;
-  printf("\nEnter energy label (A, A+, A++, A+++): ");
+  printf("\nEnter energy label, for first washing machine, then dishwasher (A, A+, A++, A+++): ");
   scanres = scanf(" %s", energy_label);
 
   if(scanres != 1) {
@@ -186,7 +186,7 @@ int overview_message(void) {
   printf("-----------------------------------------------------------------------------------\n");
   printf(" '1'  to see overview of electricity and its composition in a userdefined interval\n");
   printf(" '2'  to simulate electricity-usage based on profile information\n");
-  printf(" '4'  to create profile\n");
+  printf(" '3'  to create profile\n");
   printf(" '-1' to exit\n");
   printf("-----------------------------------------------------------------------------------\n\n");
   printf("Input: ");
@@ -211,7 +211,7 @@ int interface_handler(int user_response, profile *profile_array, double *data_ar
       simulate_electricity_usage(profile_array[index].energy_label_wash, profile_array[index].energy_label_dish, price_kwh(data_array));
       break;
     
-    case 4:
+    case 3:
       create_profile(profile_array);
       break;
     case -1:
@@ -228,9 +228,9 @@ void electricity_overview(double *data_array, int interval){
   printf("-----------------------------------------------------------------------------------\n");
   print_data_array(data_array, interval, current_hour);
   printf("-----------------------------------------------------------------------------------\n");
-  printf("Average: %2.2f DKK/kWh\n", saving_average(data_array, interval, current_hour));
-  printf("Mininum: %2.2f DKK/kWh\n", lowest_price_in_interval(data_array, interval, current_hour));
-  printf("Maximum: %2.2f DKK/kWh\n", highest_price_in_interval(data_array, interval, current_hour));
+  printf("Average: %2.2f DKK/kWh. %2.2f %% green energy\n", saving_average(data_array, interval, current_hour), renewable_average(renew_array, ));
+  printf("Mininum: %2.2f DKK/kWh. %2.2f %% green energy\n", lowest_price_in_interval(data_array, interval, current_hour));
+  printf("Maximum: %2.2f DKK/kWh. %2.2f %% green energy\n", highest_price_in_interval(data_array, interval, current_hour));
   printf("-----------------------------------------------------------------------------------\n");
 
 }

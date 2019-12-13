@@ -39,7 +39,7 @@ void initialize(double *data_array, profile *profile_array, renewable *renewable
   
   read_file(renewable_array);
 
-  init_profile(profile_array);
+  init_profile();
   read_profile_data(profile_array);
   
   get_current_time(current_time);
