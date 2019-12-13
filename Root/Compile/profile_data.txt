@@ -75,3 +75,12 @@ Username: Holder_Username , Washer: A++ , Dishwasher: A+++
 Username: Holder_Username , Washer: A++ , Dishwasher: A+++
 Username: Johan, Energy label washing machine: A, Energy label dishwasher: A
 Username: Johan, Energy label washing machine: A, Energy label dishwasher: A
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Johan, Energy label washing machine: A, Energy label dishwasher: A
+Username: Johan, Energy label washing machine: A, Energy label dishwasher: A
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++

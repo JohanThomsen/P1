@@ -26,7 +26,6 @@ double price_kwh             (double *data_array, renewable *renew_array);
 double price_prompt          (double *data_array, renewable *renew_array);
 double user_input_price      (void);
 int    interval_prompt       (void);
-void   clear_screen          (void);
 
 
 
@@ -93,6 +92,7 @@ int profile_prompt(profile *profile_array) {
   if (answer == 'Y' || answer == 'y') {
     create_profile(profile_array);
   } else if (answer == 'N' || answer == 'n') {
+    clear_screen();
     return 0;
   } else {
     error_handler(1, __LINE__, __FILE__); /* Invalid input error handling */
@@ -187,6 +187,7 @@ int prompt_menu(int input) {
 
 int overview_message(void) {
   /*printf("See the list below and enter the corresponding number for each usecase: \n");*/
+  printf("-----------------------------------------------------------------------------------\n");
   printf("                             What would you like to do ?                           \n");
   printf("-----------------------------------------------------------------------------------\n");
   printf(" '1'  to see overview of electricity and its composition in a userdefined interval\n");
@@ -211,7 +212,7 @@ int interface_handler(int user_response, profile *profile_array, double *data_ar
       electricity_overview(data_array, renew_array, interval_prompt());
       break;
     
-    case 2:                                                                  /* DONE DONE */
+    case 2:
       index = read_profile_data(profile_array);
       simulate_electricity_usage(profile_array[index].energy_label_wash, profile_array[index].energy_label_dish, price_kwh(data_array, renew_array));
       break;
@@ -305,9 +306,9 @@ double user_input_price(void){
          input  = 0;
   int scanres = 0;
 
-  printf("Input price of electricity in DKK/kWh - BEFORE taxes (in DK usually between 0.20 and 0.60 DKK): ");
+  printf("\nInput price of electricity in DKK/kWh - BEFORE taxes (in DK usually between 0.20 and 0.60 DKK): ");
   scanres = scanf(" %lf", &input);
-  
+  printf("-----------------------------------------------------------------------------------\n");
   if (scanres != 1) {
     error_handler(3, __LINE__, __FILE__); /* Too many scanf conversions */
   } else {
@@ -318,14 +319,4 @@ double user_input_price(void){
 }
 void print_current_price(double *data_array, int current_hour, renewable* renew_array){
   printf("             The current price is: %2.2lf DKK/kWh - %2.2lf %% green energy         \n", get_current_price(data_array, current_hour), get_current_renewable_share(renew_array, current_hour));
-}
-
-void clear_screen(){
-    #if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
-        system("clear");
-    #endif
-
-    #if defined(_WIN32) || defined(_WIN64)
-        system("cls");
-    #endif
 }

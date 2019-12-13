@@ -33,6 +33,7 @@ int main(void) {
 }
 
 void initialize(double *data_array, profile *profile_array, renewable *renewable_array, FILE *fp_day_hour, time_of_day *current_time, time_of_day *saved_time){
+  clear_screen();
   validate_allocation(data_array, __LINE__, __FILE__);
   validate_allocation(profile_array, __LINE__, __FILE__);
   validate_allocation(renewable_array, __LINE__, __FILE__);
