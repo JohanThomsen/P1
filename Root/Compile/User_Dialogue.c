@@ -23,7 +23,8 @@ int    interface_handler     (int user_response, profile *profile_array, double 
 void   electricity_overview  (double *data_array, renewable *renew_array, int interval);
 void   print_data_array      (double *data_array, renewable *renew_array, int interval, int current_hour);
 double price_kwh             (double *data_array, renewable *renew_array);
-double price_prompt          (double *data_array, renewable *renew_array);
+double price_prompt          (double *data_array, renewable *renew_array, int *time);
+/*double green_prompt          (double *data_array, renewable *renew_array);*/
 double user_input_price      (void);
 int    interval_prompt       (void);
 
@@ -191,7 +192,7 @@ int overview_message(void) {
   printf("                             What would you like to do ?                           \n");
   printf("-----------------------------------------------------------------------------------\n");
   printf(" '1'  to see overview of electricity and its composition in a userdefined interval\n");
-  printf(" '2'  to simulate electricity-usage based on profile information\n");
+  printf(" '2'  to simulate electricity-price based on profile information in given interval\n");
   printf(" '3'  to create profile\n");
   printf(" '-1' to exit\n");
   printf("-----------------------------------------------------------------------------------\n\n");
@@ -206,6 +207,8 @@ int user_input(int input) {
 
 int interface_handler(int user_response, profile *profile_array, double *data_array, renewable *renew_array) {
   int index = -1;
+  int time = 0;
+  double price;
   clear_screen();
   switch (user_response) {
     case 1:
@@ -213,10 +216,11 @@ int interface_handler(int user_response, profile *profile_array, double *data_ar
       break;
     
     case 2:
+      price = price_prompt(data_array, renew_array, &time);
       index = read_profile_data(profile_array);
-      simulate_electricity_usage(profile_array[index].energy_label_wash, profile_array[index].energy_label_dish, price_kwh(data_array, renew_array));
+      simulate_electricity_usage(profile_array[index].energy_label_wash, profile_array[index].energy_label_dish, price, time);
       break;
-    
+
     case 3:
       create_profile(profile_array);
       break;
@@ -228,19 +232,17 @@ int interface_handler(int user_response, profile *profile_array, double *data_ar
 }
       
 void electricity_overview(double *data_array, renewable *renew_array, int interval){
+  int time = 0;
   int current_hour = get_current_hour();
   printf("-----------------------------------------------------------------------------------\n");
   printf("                    Overview of hourly prices in inputted interval                 \n");
-  printf("-----------------------------------------------------------------------------------\n");
   print_data_array(data_array, renew_array, interval, current_hour);
   printf("-----------------------------------------------------------------------------------\n");
   printf("      Average, minimum and maximum values for price and share of green energy      \n");
   printf("-----------------------------------------------------------------------------------\n");
-  printf("Average: %2.2f DKK/kWh - %2.2f %% green energy\n", saving_average(data_array, interval, current_hour), renewable_average(renew_array, interval, current_hour));
-  printf("Mininum: %2.2f DKK/kWh - %2.2f %% green energy\n", lowest_price_in_interval(data_array, interval, current_hour), lowest_percent_renewable_in_interval(renew_array, interval, current_hour));
-  printf("Maximum: %2.2f DKK/kWh - %2.2f %% green energy\n", highest_price_in_interval(data_array, interval, current_hour), highest_percent_renewable_in_interval(renew_array, interval, current_hour));
-  printf("-----------------------------------------------------------------------------------\n");
-
+  printf("Average price: %2.2f DKK/kWh - Average green energy share %2.2f %%\n", saving_average(data_array, interval, current_hour), renewable_average(renew_array, interval, current_hour));
+  printf("Mininum price: %2.2f DKK/kWh %d - Minimum green energy share %2.2f %%\n", lowest_price_in_interval(data_array, interval, current_hour, &time), lowest_percent_renewable_in_interval(renew_array, interval, current_hour));
+  printf("Maximum price: %2.2f DKK/kWh - Maximum green energy share %2.2f %%\n", highest_price_in_interval(data_array, interval, current_hour), highest_percent_renewable_in_interval(renew_array, interval, current_hour));
 }
 
 /* Input : Double data_array, int current_hour, int interval
@@ -249,33 +251,30 @@ void electricity_overview(double *data_array, renewable *renew_array, int interv
 void print_data_array(double *data_array, renewable *renew_array, int interval, int current_hour){
   int i;
   interval += current_hour;
-
+  printf("-----------------------------------------------------------------------------------\n");
   for (i = current_hour; i < interval; ++i){
-    printf("%2.2d:00 = %2.2f DKK/kWh - %2.2f %% green energy\n", (i % 24), data_array[i], get_current_renewable_share(renew_array, i));
+    printf("%2.2d:00 = %2.2f DKK/kWh - %3.2f %% green energy\n", (i % 24), data_array[i], get_current_renewable_share(renew_array, i));
   }
 }
 
-double price_kwh(double *data_array, renewable *renew_array){
-  return price_prompt(data_array, renew_array);
-}
-
-double price_prompt(double *data_array, renewable *renew_array){
+double price_prompt(double *data_array, renewable *renew_array, int *time){
   char answer   = 'n';
   int scanres   =   0,
       interval  =   0;
   double result =   0;
   clear_screen();
-  printf(" To calculate price of electricity usage the price of electricity in DKK/kWh is needed.\n\n Do you want to use the cheapest price within customized interval over the next 24 hours, or manually input price?\n\n'C' for Cheapest price, 'M' for Manual price: ");
+  printf(" To calculate price of electricity usage the price of electricity in DKK/kWh is needed.\n\n Do you want to use the cheapest price within customized interval over the next 24 hours, or manually input price?\n\n'C' for Cheapest price or 'M' for Manual price: ");
   scanres = scanf(" %c", &answer);
+  putchar('\n');
  
   if (scanres == 1){ 
     if (answer == 'C' || answer == 'c') {
       interval = interval_prompt();
-      result = lowest_price_in_interval(data_array, interval, get_current_hour()); /* get_cheapest_price() er en del af Analyze_data modulet */
-      electricity_overview(data_array, renew_array, interval);
+      result = lowest_price_in_interval(data_array, interval, get_current_hour(), time);
+      print_data_array(data_array, renew_array, interval, get_current_hour());
     } else if (answer == 'M' || answer == 'm') {
       result = user_input_price();
-    } else {
+    } else{
       error_handler(1, __LINE__, __FILE__); /* Invalid input error */
     }
   } else {

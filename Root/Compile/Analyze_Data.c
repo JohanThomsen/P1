@@ -118,17 +118,16 @@ double highest_price_in_interval(double *price_interval_array, int interval, int
   return temp_high;
 }
 
-double lowest_price_in_interval(double *price_interval_array, int interval, int current_hour){
+double lowest_price_in_interval(double *price_interval_array, int interval, int current_hour, int *time){
   int i,
       hour_interval = interval + current_hour;
   double temp_low = INIT_VALUE_LOW;
-
   for ( i = current_hour; i < hour_interval; i++){
     if (price_interval_array[i] < temp_low){
         temp_low = price_interval_array[i];
+        *time = i;
       }  
   }
-  
   return temp_low;
 }
 
