@@ -8,7 +8,9 @@
 #define INIT_VALUE_LOW 1000
 #define INIT_VALUE_HIGH 0
 
-/* Reading green_energy and assigning values to the renewable struct, which the renewable_array is created from */
+/* Input : renewable *renewable_array,
+ * Output: different values in the struct renewable,
+ * Method: Read file data and adds the values to the corrosponding elements in the struct renewable */
 void read_file(renewable *renewable_array){
   
   int i = 0;
@@ -36,7 +38,10 @@ void read_file(renewable *renewable_array){
   }
 }
 
-/* Adding up renewable production in specified interval, dividing to find average */ 
+/* Input : renewable *renewable_array, int interval, int current_hour.
+ * Output: The average renewable energi produced in specified interval.
+ * Method: Sums electricity produced by all renewable eletricity categories and devides it by the total load. 
+ * The percentage is then divided by the interval and timed 100 to get the percentage of renewable electricity in the interval. */
 double renewable_average (renewable *renewable_array, int interval, int current_hour){
   double renewable_sum,
          renew_result = 0;
@@ -46,13 +51,17 @@ double renewable_average (renewable *renewable_array, int interval, int current_
   for (i = current_hour, renewable_sum = 0; i < hour_interval; i++){
 
     renewable_sum += (renewable_array[i].hydro_power + renewable_array[i].other_renewable + renewable_array[i].solar_power
-	              + renewable_array[i].onshore_windpower + renewable_array[i].offshore_windpower) / renewable_array[i].total_load;
+	                + renewable_array[i].onshore_windpower + renewable_array[i].offshore_windpower) / renewable_array[i].total_load;
   }
   
   renew_result = renewable_sum / interval * 100;
   return renew_result;
 }
 
+/* Input : renewable *renewable_array, int interval, int current_hour.
+ * Output: The interval with the lowest percentage of renewable energy.
+ * Method: Sums electricity produced by all renewable eletricity categories and devides it by the total load times 100 to get the percentage.
+ *         If the current interval percentage is lower then the privious interval temp_high is said to be the value of the current interval percentage */
 double lowest_percent_renewable_in_interval(renewable *renewable_array, int interval, int current_hour){
   int i,
       hour_interval = interval + current_hour;
@@ -72,6 +81,10 @@ double lowest_percent_renewable_in_interval(renewable *renewable_array, int inte
   return temp_low * 100;
 }
 
+/* Input : renewable *renewable_array, int interval, int current_hour.
+ * Output: The interval with the highest percentage of renewable energy.
+ * Method: Sums electricity produced by all renewable eletricity categories and devides it by the total load times 100 to get the percentage.
+ *         If the current interval percentage is higher then the privious interval temp_high is said to be the value of the current interval percentage */
 double highest_percent_renewable_in_interval(renewable *renewable_array, int interval, int current_hour){
   int i,
       hour_interval = interval + current_hour;
@@ -91,7 +104,9 @@ double highest_percent_renewable_in_interval(renewable *renewable_array, int int
   return temp_high * 100;
 }
 
-/* Adding up prices in specified interval, dividing to find average and finding highest and lowest price  */
+/* Input : double *price_interval_array, int interval, int current_hour.
+ * Output: The average price of interval.
+ * Method: Sums prices in specified interval and devied said sum with the interval to find the average */
 double saving_average (double *price_interval_array, int interval, int current_hour){
   double sum;
   int      i,
@@ -104,6 +119,10 @@ double saving_average (double *price_interval_array, int interval, int current_h
   
   return sum;
 }
+
+/* Input : double *price_interval_array, int interval, int current_hour.
+ * Output: The highest price of interval.
+ * Method: Loops through the entire price_interval_array, and replaces temp_high with the value of index in price_interval_array if its higher the the current value of temp_high */
 double highest_price_in_interval(double *price_interval_array, int interval, int current_hour){
   int i,
       hour_interval = interval + current_hour;
@@ -118,6 +137,9 @@ double highest_price_in_interval(double *price_interval_array, int interval, int
   return temp_high;
 }
 
+/* Input : double *price_interval_array, int interval, int current_hour, int *time
+ * Output: The lowest price of interval.
+ * Method: Loops through the entire price_interval_array, and replaces temp_low with the value of index in price_interval_array if its lower the the current value of temp_low */
 double lowest_price_in_interval(double *price_interval_array, int interval, int current_hour, int *time){
   int i,
       hour_interval = interval + current_hour;
@@ -131,10 +153,14 @@ double lowest_price_in_interval(double *price_interval_array, int interval, int 
   return temp_low;
 }
 
+/* NOTE: What is the point of this one? */
 double get_current_price(double *data_array, int current_hour){
   return data_array[current_hour];
 }
 
+/* Input : renewable *renewable_array, int current_hour.
+ * Output: The percentage of the total_load which comes from renewable energy.
+ * Method: Sums electricity produced by all renewable eletricity categories and devides it by the total load times 100 to get the percentage */
 double get_current_renewable_share(renewable *renewable_array, int current_hour){
   return  (renewable_array[current_hour].hydro_power + renewable_array[current_hour].other_renewable + renewable_array[current_hour].solar_power + 
            renewable_array[current_hour].onshore_windpower + renewable_array[current_hour].offshore_windpower) / renewable_array[current_hour].total_load * 100;
