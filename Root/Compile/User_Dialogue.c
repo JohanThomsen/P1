@@ -37,7 +37,7 @@ int intro_frontend(profile *profile_array, double *data_array, time_of_day curre
 }
 
 int user_handler(profile *profile_array) {
-  char answer = '\0';
+  char answer = '\0'; 
   printf("\nDo you have a profile? [Y/n] "); 
   scanf(" %c", &answer);
   
@@ -89,7 +89,7 @@ int profile_prompt(profile *profile_array) {
   printf("\nDo you want to create a profile? [Y/n] ");
   scanf(" %s", &answer);
   if (answer == 'Y' || answer == 'y') {
-    create_profile(profile_array);
+    create_profile(&profile_array[0]);
   } else if (answer == 'N' || answer == 'n') {
     clear_screen();
     return 0;
