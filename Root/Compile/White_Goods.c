@@ -28,7 +28,7 @@ void function_dishwasher     (char* energy_label_dish, double user_price, int ti
    The function takes the user input(energy label) and multiplies it with the price that comes from the analyze data module. */
 
 void function_dishwasher(char* energy_label_dish, double user_price, int time) {
-  printf("-----------------------------------------------------------------------------------\n");
+  printf("------------------------------------------------------------------------------------------------------------------\n");
   if(strcmp(energy_label_dish, "A") == 0) {
     printf("Your dishwasher consumes %.2f kWh/per use, at %2d:00 and will cost %.2f DKK/per use\n", AD_VALUE, time, user_price*AD_VALUE);
   }
@@ -50,7 +50,7 @@ void function_dishwasher(char* energy_label_dish, double user_price, int time) {
    AWPPP (A+++) is assigned the lowest value and AW is assigned the highest value (A).
    The function takes the user input(energy label) and multiplies it with the price that comes from the analyze data module.*/
 void function_washing_machine(char* energy_label_wash, double user_price, int time) {
-  printf("-----------------------------------------------------------------------------------\n");
+  printf("------------------------------------------------------------------------------------------------------------------\n");
   if(strcmp(energy_label_wash, "A") == 0) {
     printf("Your washing machine consumes %.2f kWh/per use, at %2d:00 and will cost %.2f DKK/per use\n", AW_VALUE, time, user_price*AW_VALUE);
   }

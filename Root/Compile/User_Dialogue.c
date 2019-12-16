@@ -29,10 +29,10 @@ int    interval_prompt       (void);
 
 
 int intro_frontend(profile *profile_array, double *data_array, time_of_day current_time, renewable *renewable_array) {
-  printf("-----------------------------------------------------------------------------------\n");
+  printf("------------------------------------------------------------------------------------------------------------------\n");
   printf("                       Welcome to A404s P1 Project solution                        \n");
   print_current_price(data_array, current_time.hour, renewable_array);
-  printf("-----------------------------------------------------------------------------------\n");
+  printf("------------------------------------------------------------------------------------------------------------------\n");
   return user_handler(profile_array);
 }
 
@@ -158,7 +158,7 @@ void user_name(char* name) {
 
 void energy_label_function(char* energy_label) {
   int scanres = 0;
-  printf("\nEnter energy label, for first washing machine, then dishwasher (A, A+, A++, A+++): ");
+  printf("\nEnter energy label, first washing machine, then dishwasher (A, A+, A++, A+++): ");
   scanres = scanf(" %s", energy_label);
 
   if(scanres != 1) {
@@ -185,14 +185,14 @@ int prompt_menu(int input) {
 }
 
 int overview_message(void) {
-  printf("-----------------------------------------------------------------------------------\n");
-  printf("                             What would you like to do ?                           \n");
-  printf("-----------------------------------------------------------------------------------\n");
+  printf("------------------------------------------------------------------------------------------------------------------\n");
+  printf("                                           What would you like to do ?                                            \n");
+  printf("------------------------------------------------------------------------------------------------------------------\n");
   printf(" '1'  to see overview of electricity and its composition in a userdefined interval\n");
   printf(" '2'  to simulate electricity-price based on profile information in given interval\n");
   printf(" '3'  to create profile\n");
   printf(" '-1' to exit\n");
-  printf("-----------------------------------------------------------------------------------\n\n");
+  printf("------------------------------------------------------------------------------------------------------------------\n");
   printf("Input: ");
   return 0;
 }
@@ -231,12 +231,12 @@ int interface_handler(int user_response, profile *profile_array, double *data_ar
 void electricity_overview(double *data_array, renewable *renew_array, int interval){
   int time = 0;
   int current_hour = get_current_hour();
-  printf("-----------------------------------------------------------------------------------\n");
-  printf("                    Overview of hourly prices in inputted interval                 \n");
+  printf("------------------------------------------------------------------------------------------------------------------\n");
+  printf("                                     Overview of hourly prices in inputted interval                               \n");
   print_data_array(data_array, renew_array, interval, current_hour);
-  printf("-----------------------------------------------------------------------------------\n");
-  printf("      Average, minimum and maximum values for price and share of green energy      \n");
-  printf("-----------------------------------------------------------------------------------\n");
+  printf("------------------------------------------------------------------------------------------------------------------\n");
+  printf("                        Average, minimum and maximum values for price and share of green energy                   \n");
+  printf("------------------------------------------------------------------------------------------------------------------\n");
   printf("Average price: %2.2f DKK/kWh - Average green energy share %2.2f %%\n", saving_average(data_array, interval, current_hour), renewable_average(renew_array, interval, current_hour));
   printf("Mininum price: %2.2f DKK/kWh - Minimum green energy share %2.2f %%\n", lowest_price_in_interval(data_array, interval, current_hour, &time), lowest_percent_renewable_in_interval(renew_array, interval, current_hour));
   printf("Maximum price: %2.2f DKK/kWh - Maximum green energy share %2.2f %%\n", highest_price_in_interval(data_array, interval, current_hour), highest_percent_renewable_in_interval(renew_array, interval, current_hour));
@@ -248,7 +248,7 @@ void electricity_overview(double *data_array, renewable *renew_array, int interv
 void print_data_array(double *data_array, renewable *renew_array, int interval, int current_hour){
   int i;
   interval += current_hour;
-  printf("-----------------------------------------------------------------------------------\n");
+  printf("------------------------------------------------------------------------------------------------------------------\n");
   for (i = current_hour; i < interval; ++i){
     printf("%2.2d:00 = %2.2f DKK/kWh - %3.2f %% green energy\n", (i % 24), data_array[i], get_current_renewable_share(renew_array, i));
   }
@@ -304,7 +304,7 @@ double user_input_price(void){
 
   printf("\nInput price of electricity in DKK/kWh - BEFORE taxes (in DK usually between 0.20 and 0.60 DKK): ");
   scanres = scanf(" %lf", &input);
-  printf("-----------------------------------------------------------------------------------\n");
+  printf("------------------------------------------------------------------------------------------------------------------\n");
   if (scanres != 1) {
     error_handler(3, __LINE__, __FILE__); /* Too many scanf conversions */
   } else {
@@ -314,5 +314,5 @@ double user_input_price(void){
   return price;
 }
 void print_current_price(double *data_array, int current_hour, renewable* renew_array){
-  printf("             The current price is: %2.2lf DKK/kWh - %2.2lf %% green energy         \n", get_current_price(data_array, current_hour), get_current_renewable_share(renew_array, current_hour));
+  printf("                            The current price is: %2.2lf DKK/kWh - %2.2lf %% green energy                          \n", get_current_price(data_array, current_hour), get_current_renewable_share(renew_array, current_hour));
 }
