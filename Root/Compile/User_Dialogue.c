@@ -30,7 +30,7 @@ int    interval_prompt       (void);
 
 int intro_frontend(profile *profile_array, double *data_array, time_of_day current_time, renewable *renewable_array) {
   printf("------------------------------------------------------------------------------------------------------------------\n");
-  printf("                       Welcome to A404s P1 Project solution                        \n");
+  printf("                                       Welcome to A404s P1 Project solution                                       \n");
   print_current_price(data_array, current_time.hour, renewable_array);
   printf("------------------------------------------------------------------------------------------------------------------\n");
   return user_handler(profile_array);
@@ -260,6 +260,7 @@ double price_prompt(double *data_array, renewable *renew_array, int *time){
       interval  =   0;
   double result =   0;
   clear_screen();
+  printf("------------------------------------------------------------------------------------------------------------------\n");
   printf(" To calculate price of electricity usage the price of electricity in DKK/kWh is needed.\n\n Do you want to use the cheapest price within customized interval over the next 24 hours, or manually input price?\n\n'C' for Cheapest price or 'M' for Manual price: ");
   scanres = scanf(" %c", &answer);
   putchar('\n');
@@ -284,6 +285,7 @@ double price_prompt(double *data_array, renewable *renew_array, int *time){
 int interval_prompt(void) {
   int interval = 0,
       scanres  = 0;
+  printf("------------------------------------------------------------------------------------------------------------------\n");
   printf("Input interval for which the prices should be shown (1-24): ");
   scanres = scanf(" %d", &interval);
 
