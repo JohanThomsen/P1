@@ -238,7 +238,7 @@ void electricity_overview(double *data_array, renewable *renew_array, int interv
   printf("      Average, minimum and maximum values for price and share of green energy      \n");
   printf("-----------------------------------------------------------------------------------\n");
   printf("Average price: %2.2f DKK/kWh - Average green energy share %2.2f %%\n", saving_average(data_array, interval, current_hour), renewable_average(renew_array, interval, current_hour));
-  printf("Mininum price: %2.2f DKK/kWh %d - Minimum green energy share %2.2f %%\n", lowest_price_in_interval(data_array, interval, current_hour, &time), lowest_percent_renewable_in_interval(renew_array, interval, current_hour));
+  printf("Mininum price: %2.2f DKK/kWh - Minimum green energy share %2.2f %%\n", lowest_price_in_interval(data_array, interval, current_hour, &time), lowest_percent_renewable_in_interval(renew_array, interval, current_hour));
   printf("Maximum price: %2.2f DKK/kWh - Maximum green energy share %2.2f %%\n", highest_price_in_interval(data_array, interval, current_hour), highest_percent_renewable_in_interval(renew_array, interval, current_hour));
 }
 

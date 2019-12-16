@@ -114,3 +114,6 @@ Username: Holder_Username , Washer: A++ , Dishwasher: A+++
 Username: Holder_Username , Washer: A++ , Dishwasher: A+++
 Username: Holder_Username , Washer: A++ , Dishwasher: A+++
 Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
+Username: johan, Energy label washing machine: A, Energy label dishwasher: A
+Username: Holder_Username , Washer: A++ , Dishwasher: A+++
