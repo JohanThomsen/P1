@@ -15,11 +15,10 @@ void error_handler(int error_code, int line_number, char *file) {
   exit(EXIT_FAILURE);
 }
 
-void* validate_allocation(void* input_pointer, int line_number, char *file) {
+void validate_allocation(void* input_pointer, int line_number, char *file) {
   if (input_pointer == NULL) {
     error_handler(0, line_number, file); /* NULL POINTER */
   }
-  return input_pointer;
 }
 
 void init_profile(void) {

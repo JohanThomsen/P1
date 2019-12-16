@@ -22,9 +22,7 @@ int    overview_message      (void);
 int    interface_handler     (int user_response, profile *profile_array, double *data_array, renewable *renew_array);
 void   electricity_overview  (double *data_array, renewable *renew_array, int interval);
 void   print_data_array      (double *data_array, renewable *renew_array, int interval, int current_hour);
-double price_kwh             (double *data_array, renewable *renew_array);
 double price_prompt          (double *data_array, renewable *renew_array, int *time);
-/*double green_prompt          (double *data_array, renewable *renew_array);*/
 double user_input_price      (void);
 int    interval_prompt       (void);
 
@@ -61,7 +59,7 @@ int answer_handling(char input, profile *profile_array) {
   return 0;
 }
 
-int read_profile_data(profile *profiles) { /* Stub function */
+int read_profile_data(profile *profiles) {
   int local_max_array_lgt = 100, 
       i,
       local_max_entries,
@@ -187,7 +185,6 @@ int prompt_menu(int input) {
 }
 
 int overview_message(void) {
-  /*printf("See the list below and enter the corresponding number for each usecase: \n");*/
   printf("-----------------------------------------------------------------------------------\n");
   printf("                             What would you like to do ?                           \n");
   printf("-----------------------------------------------------------------------------------\n");

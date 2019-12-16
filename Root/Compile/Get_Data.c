@@ -87,7 +87,7 @@ void put_day_and_hour_into_txt(FILE *fp_day_hour, time_of_day *current_time){
 /* Input : Double data_array
  * Output: an updated data_array ran through a randomised noise generator.
  * Method: Runs through all numbers in the array, via a for loop, and multiplies it by a random number between 0.9 and 1.1, then divided by 1000 as the price in seed_data in is Mwh
- * This random number is seeded by the previous random number each iteration so it remains random from number to number */
+ * This random number is seeded by the how many cycles the cpu has gone through each iteration so it remains random from number to number */
 void data_gen(double *data_array, FILE *fp_saved_prices){
   int i,
       multiplier,
