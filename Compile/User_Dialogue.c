@@ -109,6 +109,7 @@ void create_profile(profile *profile_input) {  /* Nominated for header */
     user_name(profile_input->profile_name);
     energy_label_function(profile_input->energy_label_wash);
     energy_label_function(profile_input->energy_label_dish);
+    
    
     if((compare_labels(profile_input->energy_label_wash, energy_label) == 1) && (compare_labels(profile_input->energy_label_dish, energy_label) == 1)) {
       
