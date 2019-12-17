@@ -21,7 +21,6 @@ int main(void) {
   renewable *renewable_array = calloc(RENEW_ARRAY_SIZE, sizeof(renewable));
 
   initialize(data_array, profile_array, renewable_array, fp_day_hour, &current_time, &saved_time);
-  validate_allocation(data_array, __LINE__, __FILE__);
 
   intro_frontend(profile_array, data_array, current_time, renewable_array);
   do {
